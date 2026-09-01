@@ -1,0 +1,57 @@
+# AGENTS.md
+
+Instructions for any coding agent (Cursor, Claude Code, or otherwise) working in this repo.
+Human contributors: see `README.md` instead — this file is written for agents and skips the
+narrative tour.
+
+<!-- 1-2 sentences: what this project is, what it's for. -->
+
+## Stack
+
+<!-- Language/framework/runtime versions, key libraries, anything an agent needs to know
+     before touching code. -->
+
+## Install
+
+```bash
+<!-- exact install command -->
+```
+
+## Configure
+
+<!-- Required/optional env vars, config files, what works with zero setup vs. what needs
+     opt-in configuration. -->
+
+## Run
+
+```bash
+<!-- dev server / build / preview commands -->
+```
+
+## Test / CI parity
+
+```bash
+<!-- the exact sequence CI runs on push/PR, so a local run before pushing matches CI -->
+```
+
+## Conventions
+
+<!-- Layout, naming, and stack-specific patterns organized by area. Link to
+     `.claude/skills/*/SKILL.md` playbooks for anything detailed enough to need one. -->
+
+## Constraints — do not
+
+<!-- Things an agent should never do in this repo: forbidden imports/APIs, assumptions that
+     don't hold (e.g. "don't assume hosted at /"), destructive actions needing explicit ask. -->
+
+## Definition of done
+
+- **Task done**: <!-- smallest relevant check for a typical edit -->.
+- **PR done**: <!-- full CI-parity sequence + PR template; when to actually push/open a PR. -->
+
+---
+
+Skills: `.claude/skills` is this repo's canonical skills directory (`.cursor/skills` symlinks
+to it for legacy Cursor compatibility). This repo also installs the shared `foundations`
+plugin from the `dani-foundations` marketplace for skills common across personal projects —
+see `CLAUDE.md`.

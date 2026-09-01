@@ -1,0 +1,11 @@
+{
+  "name": "dani-foundations",
+  "owner": { "name": "Danielle Sheehan" },
+  "plugins": [
+    {
+      "name": "foundations",
+      "source": "./plugins/foundations",
+      "description": "Shared process/docs Claude Code skills for personal project repos"
+    }
+  ]
+}
