@@ -6,7 +6,7 @@ being hand-copied (and hand-drifted) into every repo.
 
 ## What's here
 
-- **`foundations` plugin** (`plugins/foundations/`) — 11 shared skills:
+- **`foundations` plugin** (`plugins/foundations/`) — 14 shared skills:
   - `doc-writer` — README / API doc (JSDoc/GoDoc) / inline comment generation
   - `pr-ready` — pre-PR CI-parity checklist and PR description guidance
   - `definition-of-done` — post-edit format/lint/test/build verification
@@ -19,6 +19,12 @@ being hand-copied (and hand-drifted) into every repo.
   - `api-hardening` — backend/API hardening principles (validation, SSRF-safe upstream calls,
     generic client errors, CORS/rate-limit defaults), independent of backend stack
   - `github-pages-deploy` — GitHub Pages project-site base-path handling and workflow shape
+  - `bugbot-fix-verify` — verifies an automated review-bot finding against ground truth before
+    fixing it, and re-verifies the fix doesn't open a new gap
+  - `caching-and-upstream-perf` — caching/rate-limiting principles for wrapping a slow or
+    rate-limited third-party API, independent of backend stack
+  - `doc-sync-patch` — patches doc version claims to match the real manifest once a stack-docs
+    drift check flags them
 
   These skills describe the generic shape of each task and defer to each consuming repo's
   own `AGENTS.md` / local skills for exact commands and framework-specific patterns (React,
