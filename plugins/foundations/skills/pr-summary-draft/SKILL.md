@@ -50,22 +50,33 @@ Follow this repo's PR template (if any) and the **pr-ready** skill's guidance ex
 - Stronger: `The card shimmer was recalculating on every scroll frame even when the card was
   off screen; gate it behind an IntersectionObserver so idle cards stop costing paint time.`
 
+If this repo already has automated PR scaffolding (e.g. a bot-posted checklist or
+verify-command comment, a path-based PR guide action), don't re-derive or duplicate that
+mechanical content here — check for it first. This skill's Summary should add the *why*
+that automation can't infer from file paths alone, not restate what's already posted.
+
 ### 4. Write How to verify
 
 User-facing steps: UI paths to exercise, expected before/after behavior, or the commands run
-(lint / test / build — see **pr-ready**). Use `N/A` for tooling-only changes.
+(lint / test / build — see **pr-ready**). Use `N/A` for tooling-only changes. Skip this section
+entirely (or keep it minimal) if this repo's automated PR scaffolding already posts a
+verify-command checklist — don't restate it.
 
 ### 5. Apply it
 
 - **New PR**: `gh pr create --title "..." --body "$(cat <<'EOF' ... EOF)"` with the Summary and
   How to verify sections filled in. Only create the PR if the user asked for one.
 - **Existing PR**: `gh pr edit <number> --body-file <file>` — read the current body first
-  (`gh pr view <number> --json body`) before overwriting it.
+  (`gh pr view <number> --json body`) before overwriting it. If this repo's PR automation
+  manages a marker block in the body (e.g. an HTML comment marker it updates on each push),
+  preserve that block untouched — don't hand-edit or remove it.
 
 ## Anti-patterns
 
 - Summaries that restate the diff (`Changed X.tsx, Y.ts`) instead of explaining motivation.
 - Guessing "why" when it isn't evident from the diff, commits, or conversation — ask instead.
+- Duplicating this repo's own automated path-based checklist/verify-command output by hand.
+- Removing or hand-editing an automation-managed marker block in an existing PR body.
 - Opening, editing, or pushing a PR without being asked.
 
 ## Reference

@@ -36,8 +36,18 @@ and write an HTML/XML report for deeper inspection.
 
 ### 3. Find uncovered lines in the changed files
 
-Read the terminal table's row for each changed file, or open the generated HTML report for
-the annotated source (usually red = uncovered).
+**JS/TS (Vitest/Jest/Istanbul-style)** — read the terminal table's row for each changed file
+(an "Uncovered Line #s" column, or similar), or open the generated HTML report for the
+annotated source (usually red = uncovered).
+
+**Go** — `coverage.out` lines are `file:startLine.col,endLine.col numStmts count`; a trailing
+`0` means uncovered:
+
+```bash
+grep "path/to/file.go:" coverage.out | grep -E ' 0$'
+```
+
+Or use `go tool cover -func=coverage.out` for a per-function summary.
 
 ### 4. Describe what's untested, not just where
 
