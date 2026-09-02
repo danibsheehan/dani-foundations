@@ -55,6 +55,10 @@ Evaluate in this order — first match wins:
    - A **major** version bump (or a 0.x → 1.x jump) — auto-merge typically never touches these.
    - A breaking/minimum-version changelog entry (see step 2).
    - Required checks red.
+   - **A GitHub Actions bump, regardless of version delta**, if this repo's `dependabot.yml`
+     leaves that ecosystem ungrouped/individually reviewed (a common pattern) — an Actions bump
+     moves a trusted pinned SHA/tag, which matters more than the semver delta looks like it does.
+     Never auto-classify these as low-risk on bump size alone.
    - Still open after a few days despite being patch/minor — worth checking why auto-merge hasn't
      picked it up (e.g. a merge conflict, or a required check never went green).
 3. **Low risk** — a patch/minor bump, required checks green, no breaking/minimum-version changelog
