@@ -10,13 +10,18 @@ description: >
 
 After **substantive** edits (features, components, core library code, server/proxy, styles,
 build/CI config), run this repo's format/lint/test/build commands from the repo root, in
-order — check this repo's `AGENTS.md`'s Test/CI parity section, or its own local
-`definition-of-done`-equivalent skill, for the exact command names:
+order.
 
-1. Format check (fix if needed)
-2. Lint
-3. Tests
-4. Build
+**For an npm-based single-stack repo**, this is a confirmed-identical command set — verified
+against `package.json` in more than one of these repos, not a guess:
+
+1. `npm run format:check` (fix with `npm run format` if needed)
+2. `npm run lint`
+3. `npm run test:run` (or `npm run test:coverage` before a PR — see **pr-ready**)
+4. `npm run build`
+
+**For a Go/multi-stack repo**, use this repo's actual `make`-based equivalent — check its
+`AGENTS.md` or its own local `definition-of-done`-equivalent skill for the exact target name.
 
 Fix failures before considering the task complete.
 

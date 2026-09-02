@@ -24,17 +24,31 @@ Pre-PR:
 
 ### 1. Local CI parity
 
-Run this repo's actual commands — check its `AGENTS.md`'s Test/CI parity section, or its
-own local `pr-ready`-equivalent skill, for the exact command names (they vary by stack:
-`npm run lint` / `go vet` / `make ci-local`, etc.). At minimum, match what the repo's CI
-workflow runs on a pull request — the required check should be named `quality` for a
-single-stack repo (or `quality` + `unit-tests` if split), or `<Stack> (...)` per stack for
-a multi-stack repo (see the `dependabot-triage` skill for the full naming convention):
+**For an npm-based single-stack repo**, this is a confirmed-identical command set across
+these repos — not a guess, verified against `package.json` in more than one of them — so
+treat it as the real default, not just an example:
 
-- Format check
-- Lint
-- Full test suite, with coverage if CI enforces thresholds
-- Build
+```bash
+npm run format:check
+npm run lint
+npm run test:coverage
+npm run build
+```
+
+Also run `npm audit --audit-level=high` if this repo's CI does (check its workflow — not
+every repo has this yet, but where it exists it's part of the required gate, not optional).
+If this repo has a stack-docs-drift check (a script verifying README/`AGENTS.md` stack
+claims match actual `package.json`/`go.mod`/CI versions — see `check_stack_docs.py` in
+musing or caught-looking as the reference implementation), run that too.
+
+**For a Go/multi-stack repo**, use this repo's actual `make`-based equivalent (e.g.
+`make ci-local`) — check its `AGENTS.md` or its own local `pr-ready`-equivalent skill for
+the exact target name.
+
+Match what the repo's CI workflow runs on a pull request either way — the required check
+should be named `quality` for a single-stack repo (or `quality` + `unit-tests` if split),
+or `<Stack> (...)` per stack for a multi-stack repo (see the `dependabot-triage` skill for
+the full naming convention).
 
 Faster while iterating (not a substitute before PR): a quick/watch test run instead of the
 full coverage suite.
