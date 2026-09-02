@@ -6,7 +6,7 @@ being hand-copied (and hand-drifted) into every repo.
 
 ## What's here
 
-- **`foundations` plugin** (`plugins/foundations/`) — 14 shared skills:
+- **`foundations` plugin** (`plugins/foundations/`) — 18 shared skills:
   - `doc-writer` — README / API doc (JSDoc/GoDoc) / inline comment generation
   - `pr-ready` — pre-PR CI-parity checklist and PR description guidance
   - `definition-of-done` — post-edit format/lint/test/build verification
@@ -25,6 +25,14 @@ being hand-copied (and hand-drifted) into every repo.
     rate-limited third-party API, independent of backend stack
   - `doc-sync-patch` — patches doc version claims to match the real manifest once a stack-docs
     drift check flags them
+  - `react-vitest-testing` — React + Vitest + Testing Library mechanics (mock the API client,
+    `renderHook` loading-race gotcha, roles/loading/error/empty checklist)
+  - `vue-vitest-testing` — Vue 3 + Vitest mechanics (`@vue/test-utils` mount, `defineEmits`,
+    composables, Pinia/router setup)
+  - `angular-vitest-testing` — Angular + Vitest mechanics (`TestBed`, `HttpTestingController`,
+    Input/Output, Router navigation)
+  - `go-http-testing` — Go HTTP handler/service testing mechanics (`httptest` fakes,
+    router-aware handler tests, the validation/success/upstream-failure minimum bar)
 
   These skills describe the generic shape of each task and defer to each consuming repo's
   own `AGENTS.md` / local skills for exact commands and framework-specific patterns (React,
