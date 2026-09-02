@@ -80,8 +80,43 @@ Always tell the user:
 1. What was generated and which files changed
 2. Any gaps (e.g., "I couldn't find a description for `X` — you may want to fill that in")
 
-## Repo-specific conventions
+## Accuracy checklist (applies to any repo)
 
-If this repo has its own local `doc-writer`-named skill or a documentation section in
-`AGENTS.md`, follow those repo-specific rules (e.g. keeping a design-token table or an
-SVG diagram in sync with a README) in addition to the steps above.
+- **Reflect what's actually shipped** — describe real, current behavior from the code, not
+  planned/future work. Never list an unshipped feature as done.
+- **Match the actual scripts/commands** — a README's Run/Scripts section should name the
+  same commands `package.json`/`go.mod`/`Makefile` actually defines, not a remembered or
+  aspirational set.
+- **Keep stack/version claims aligned with the real manifest** — if this repo has an
+  automated check for this (a script comparing README/`AGENTS.md` stack claims against
+  `package.json`/`go.mod`/CI versions — see `check_stack_docs.py` as a reference
+  implementation, already present in more than one of these repos), make sure the doc
+  change would pass it, not just read plausibly.
+- **Keep config docs aligned with actual env/config usage** — documented env var names
+  should match `.env.example` and what the code actually reads, not what used to be true.
+- **Prefer short tables and copy-pasteable commands** over long prose where either works.
+
+## Style defaults (applies to any repo, unless the repo's own README already established a
+different tone deliberately)
+
+- Prefer plain-case section headers over ALL-CAPS or heavy decorative styling in body
+  content.
+- Add a one-sentence plain-English lead-in before a jargon-heavy table or list, so a
+  less-familiar reader isn't dropped straight into terminology.
+- Reserve decorative flourish (banners, ASCII art, badges) for the top of the README and
+  an optional closing note — not scattered through body sections.
+
+## Design-token / palette-sync pattern (if this repo has one)
+
+If this repo has a design-token source file (e.g. `src/styles/tokens.css`,
+`_tokens.scss`, or similar) that feeds a README color/palette table and/or a generated
+diagram (e.g. a `docs/*-palette.svg`), all three must stay in sync whenever a token value
+changes: update the token file, the README table, and regenerate or hand-edit the diagram
+in the same left-to-right/same order. This is a recurring pattern across these repos, not
+a one-off — check for this setup (a styles/tokens file + a README palette table) even if
+it isn't called out elsewhere, and keep all three in sync if you find it.
+
+## Anything else repo-specific
+
+If this repo's `AGENTS.md` documents something beyond the above (a doc convention truly
+specific to this product, not a generic principle), follow that too.
