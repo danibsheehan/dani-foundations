@@ -31,9 +31,16 @@ second convention for the same problem.
   decorative (and document that choice).
 - **Reduced motion** — `prefers-reduced-motion: reduce` should skip or simplify
   non-essential animation (CSS `@media` and/or a JS check before triggering heavy
-  animation/video/Lottie-style players).
+  animation/video/Lottie-style players). For an animation library that loads a separate
+  data/player file (e.g. a Lottie JSON), check the reduced-motion preference *before*
+  fetching that file at all — skip the load, not just the playback, so reduced-motion users
+  don't pay the network/parse cost for an animation they'll never see.
 - **Focus rings** — prefer `:focus-visible` over bare `:focus` so mouse users don't get a
   ring on click, but keyboard users still see one clearly.
+- **Moving focus programmatically after an action** (e.g. after search results or a new
+  section appears) — target a landmark or heading with `tabindex="-1"` rather than trying to
+  focus non-focusable content directly; this lets you call `.focus()` on it without adding it
+  to the natural tab order.
 
 ## `index.html` / document baseline
 
