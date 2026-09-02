@@ -27,8 +27,25 @@ being hand-copied (and hand-drifted) into every repo.
 
 - **`templates/`** — `AGENTS.md.template` and `CLAUDE.md.template` capturing the skeleton
   shape shared across these repos (Stack/Install/Configure/Run/Test-CI-parity/Conventions/
-  Constraints/Definition-of-done headings). Copy these in when bootstrapping a new repo and
-  fill in the repo-specific prose; not auto-synced into existing repos.
+  Constraints/Definition-of-done headings), plus `dependabot.yml.template` capturing the
+  already-standardized Dependabot grouping convention (npm minor/patch grouped for
+  auto-merge, every other ecosystem ungrouped for individual review). Copy these in when
+  bootstrapping a new repo and fill in the repo-specific prose; not auto-synced into
+  existing repos.
+
+## Standards established here (beyond the skills themselves)
+
+- **Required CI check naming**: single-stack repo → one required check named `quality`
+  (or `quality` + `unit-tests` if build/lint and tests are split into separate jobs);
+  multi-stack repo → `<Stack> (...)` per stack, plus an optional dedicated lint check. This
+  is the target convention `dependabot-triage`/`pr-ready` assume — not a guarantee every
+  consuming repo has already renamed its jobs to match.
+- **Coverage threshold policy**: a ratchet, not a fixed target — the threshold in CI config
+  should sit at roughly the repo's current actual coverage and only ever go up, never down
+  to land a change easier. Different repos legitimately have different numbers; the policy
+  is what's shared, not the number.
+- **Dependabot grouping**: see `templates/dependabot.yml.template` above — already
+  identical in practice across all 4 repos before this was ever written down.
 
 ## Using this marketplace in a repo
 

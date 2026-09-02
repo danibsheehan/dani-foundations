@@ -27,7 +27,9 @@ Pre-PR:
 Run this repo's actual commands — check its `AGENTS.md`'s Test/CI parity section, or its
 own local `pr-ready`-equivalent skill, for the exact command names (they vary by stack:
 `npm run lint` / `go vet` / `make ci-local`, etc.). At minimum, match what the repo's CI
-workflow runs on a pull request:
+workflow runs on a pull request — the required check should be named `quality` for a
+single-stack repo (or `quality` + `unit-tests` if split), or `<Stack> (...)` per stack for
+a multi-stack repo (see the `dependabot-triage` skill for the full naming convention):
 
 - Format check
 - Lint
