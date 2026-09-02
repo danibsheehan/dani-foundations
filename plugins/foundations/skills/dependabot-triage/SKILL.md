@@ -38,7 +38,14 @@ If there are none open, say so and stop — nothing to triage.
   across these repos: `npm` bumps are grouped as `npm-minor-and-patch` (minor+patch only,
   auto-mergeable); `github-actions` (and any other ecosystem, e.g. `gomod`) stay ungrouped
   and individually reviewed, since those bumps move a pinned commit/version one at a time
-  rather than a routine dependency range.
+  rather than a routine dependency range. Not every ecosystem gets a distinct label from
+  Dependabot (`gomod` commonly doesn't) — if a PR's title/labels don't identify the
+  ecosystem clearly, infer it from the target directory in the title (e.g. a monorepo with
+  `/backend` and `/frontend` subdirectories per ecosystem).
+- **A 0.x package's minor bumps aren't automatically "major"-risk** — only an actual
+  major-version bump (or a 0.x → 1.x crossing) should escalate a PR to "needs a look" on
+  version-shape alone; routine 0.x-minor churn (common for actively-developed libraries
+  still under v1) is otherwise judged the same as any other minor/patch bump.
 - **Required CI only** — identify this repo's actual merge-blocking check(s). The naming
   convention: a single-stack repo's required check should be named `quality` (or `quality`
   + `unit-tests` if the build/lint and test steps are split into separate jobs); a
