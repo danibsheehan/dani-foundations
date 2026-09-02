@@ -34,10 +34,19 @@ If there are none open, say so and stop — nothing to triage.
 ### 2. Gather signal per PR
 
 - **Ecosystem / bump shape** from the title and labels (e.g. `npm`, `github_actions`,
-  `gomod`) — see this repo's `.github/dependabot.yml`.
-- **Required CI only** — identify this repo's actual merge-blocking check(s) (see its
-  `AGENTS.md` or `.github/workflows/`); informational checks (e.g. CodeQL, Lighthouse)
-  don't affect mergeability.
+  `gomod`) — see this repo's `.github/dependabot.yml`. The standard grouping convention
+  across these repos: `npm` bumps are grouped as `npm-minor-and-patch` (minor+patch only,
+  auto-mergeable); `github-actions` (and any other ecosystem, e.g. `gomod`) stay ungrouped
+  and individually reviewed, since those bumps move a pinned commit/version one at a time
+  rather than a routine dependency range.
+- **Required CI only** — identify this repo's actual merge-blocking check(s). The naming
+  convention: a single-stack repo's required check should be named `quality` (or `quality`
+  + `unit-tests` if the build/lint and test steps are split into separate jobs); a
+  multi-stack repo (e.g. a separate frontend/backend) uses `<Stack> (...)` per stack, plus
+  an optional dedicated lint check. If this repo's actual job names don't match yet, use
+  its real names — this is the target convention, not a guarantee every repo has already
+  adopted it. Informational checks (e.g. CodeQL, Lighthouse, E2E/SBOM) don't affect
+  mergeability regardless of naming.
 - **Changelog** — `gh pr view <n> --json body`. Dependabot embeds the release notes in a
   collapsible `<details>` block. Scan for:
   - Security signals: `CVE`, `GHSA`, "security fix" — treat as **Security** regardless of size.

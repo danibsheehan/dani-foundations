@@ -1,0 +1,33 @@
+# Weekly version updates for npm and GitHub Actions.
+# https://docs.github.com/en/code-security/dependabot/dependabot-version-updates
+#
+# This is the standard shape already shared identically across musing, caught-looking,
+# gotta-catch-em-all, and baseball-collection: npm minor/patch bumps are grouped so
+# dependabot-auto-merge.yml (dani-actions) can auto-merge them once required checks pass;
+# github-actions (and any other ecosystem) stay ungrouped so each bump — which moves a
+# pinned commit, not just a version — gets individually reviewed via the dependabot-triage
+# skill.
+#
+# For a repo with more than one ecosystem (e.g. a Go backend), add another block below
+# using the same shape as github-actions (ungrouped, weekly, same PR limit) — see
+# caught-looking's gomod block for a real example.
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 10
+    groups:
+      npm-minor-and-patch:
+        update-types:
+          - minor
+          - patch
+
+  - package-ecosystem: github-actions
+    # Scans .github/workflows (and root action manifests). Keep ungrouped so
+    # Action SHA/tag bumps stay reviewable one at a time.
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 10

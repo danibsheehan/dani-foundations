@@ -23,6 +23,16 @@ Fix failures before considering the task complete.
 For small, localized edits, the **smallest** relevant check is enough (e.g. a focused test
 file, or lint only). Do **not** require the full suite or a deploy-shaped build for every tweak.
 
+## Coverage threshold policy
+
+The standard across these repos is a **ratchet, not a fixed target**: the coverage
+threshold in CI config is set to roughly the repo's current actual coverage (not some
+universal percentage), and only ever raised as test suites grow — never lowered to make a
+change easier to land. Different repos legitimately have different threshold numbers
+because they're at different points in that ratchet, not because the policy itself
+differs. When a change meaningfully improves coverage, consider raising the threshold in
+the same PR; don't lower it to get a change through.
+
 ## When to also run a deploy-shaped build
 
 If the change touches deploy base path, client API base, or static hosting config (e.g. a
