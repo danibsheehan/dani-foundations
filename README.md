@@ -16,7 +16,7 @@ how a project wires it in._
 
 ## What's here
 
-- **`foundations` plugin** (`plugins/foundations/`) — 18 shared skills, each a short
+- **`foundations` plugin** (`plugins/foundations/`) — 19 shared skills, each a short
   instruction file Claude Code reads automatically when it's relevant:
   - `doc-writer` — README / API doc (JSDoc/GoDoc) / inline comment generation
   - `pr-ready` — pre-PR CI-parity checklist and PR description guidance
@@ -42,8 +42,12 @@ how a project wires it in._
     composables, Pinia/router setup)
   - `angular-vitest-testing` — Angular + Vitest mechanics (`TestBed`, `HttpTestingController`,
     Input/Output, Router navigation)
-  - `go-http-testing` — Go HTTP handler/service testing mechanics (`httptest` fakes,
-    router-aware handler tests, the validation/success/upstream-failure minimum bar)
+  - `go-http-testing` — Go HTTP handler/middleware/service testing mechanics (`httptest`
+    fakes, router-aware handler tests, the validation/success/upstream-failure minimum bar,
+    middleware tests, and choosing between an upstream fake and an interface mock)
+  - `go-testing` — cross-cutting Go testing idioms independent of app shape (concurrent
+    idempotency/coalescing convergence, retry/backoff via an injectable seam, config/env-loader
+    defaults, table-driven predicate/classifier tests)
 
   These skills describe the generic shape of each task and defer to each consuming repo's
   own `AGENTS.md` / local skills for exact commands and framework-specific patterns (React,
@@ -98,6 +102,8 @@ Bump `plugins/foundations/.claude-plugin/plugin.json`'s `version` on any change 
 should pick up — Claude Code's plugin install is a per-repo snapshot (pinned to the commit
 present at install time), not a live sync, so a version bump alone doesn't push anything;
 each consuming repo has to explicitly re-install/update via `/plugins` to pick up a new
-version. Git tags on this repo (`v1`, ...) are for human-readable release history only —
-they aren't consulted by the plugin install/update mechanism itself (unlike `dani-actions`,
-where a git tag ref is exactly what a consumer's `workflow_call` pins to).
+version. Every version bump gets a matching git tag (`vX.Y.Z`, e.g. `v1.8.0`) at the commit
+that makes the bump, so tag history exactly mirrors `plugin.json` history — the easiest way
+to answer "what changed between the version I have and HEAD." Tags aren't consulted by the
+plugin install/update mechanism itself (unlike `dani-actions`, where a git tag ref is exactly
+what a consumer's `workflow_call` pins to); they're for human-readable release history only.
