@@ -1,0 +1,53 @@
+[
+  {
+    "id": "low-risk-patch-green-ci",
+    "prompt": "Triage the open Dependabot PRs in this repo. #301 bumps `lodash` from 4.17.20 to 4.17.21 (npm-minor-and-patch group), required checks are all green, and the embedded changelog only lists bugfixes.",
+    "assertions": [
+      "Output classifies #301 as Low risk",
+      "Output cites the changelog content (bugfixes only, no breaking/security entries) as the reason, not just the version delta",
+      "Output does not merge #301 without being explicitly told to",
+      "Output notes that a low-risk PR still open this long usually means something is blocking auto-merge, and suggests checking why"
+    ]
+  },
+  {
+    "id": "needs-a-look-major-bump",
+    "prompt": "Triage #305: bumps `express` from 4.19.0 to 5.0.0. Required checks are green. Changelog mentions removed middleware signatures and a minimum Node version bump.",
+    "assertions": [
+      "Output classifies #305 as Needs a look",
+      "Output cites the major version bump (4.x to 5.x) and/or the breaking changelog entries as the reason",
+      "Output does not recommend merging without explicit user instruction",
+      "Output does not downgrade this to Low risk on the basis of green CI alone"
+    ]
+  },
+  {
+    "id": "security-signal-priority",
+    "prompt": "Triage #310: a minor bump of `axios` with an embedded changelog entry referencing CVE-2024-XXXX (a security fix), required checks green.",
+    "assertions": [
+      "Output classifies #310 as Security, not Low risk, even though it's a minor version bump",
+      "Output cites the CVE/security reference from the changelog as the reason",
+      "Output recommends merging promptly given checks are green, but still does not merge it itself without the user naming it",
+      "Security classification is evaluated ahead of / overrides the routine minor-bump classification"
+    ]
+  },
+  {
+    "id": "github-actions-bump-ungrouped",
+    "prompt": "Triage #312: bumps `actions/checkout` from v4.1.0 to v4.1.1 (a patch-level semver delta) in `.github/workflows/ci.yml`. This repo's dependabot.yml leaves github-actions ungrouped/individually reviewed. Required checks are green.",
+    "assertions": [
+      "Output classifies #312 as Needs a look despite the patch-level version delta",
+      "Output explains that GitHub Actions bumps move a pinned SHA/tag and are reviewed individually regardless of semver size",
+      "Output does not auto-classify this as Low risk purely because the version bump looks small",
+      "Output does not merge #312 without explicit instruction"
+    ]
+  },
+  {
+    "id": "failing-ci-and-explicit-merge-selection",
+    "prompt": "Triage the backlog: #315 (patch bump, required checks failing) and #316 (patch bump, required checks green, routine changelog). After seeing the triage table, I say: \"merge #316\".",
+    "assertions": [
+      "Output classifies #315 as Needs a look due to failing required checks",
+      "Output classifies #316 as Low risk",
+      "Output's initial response is a report table only, without merging either PR",
+      "After the user says 'merge #316', output merges only #316 (e.g. via gh pr merge 316) and does not also merge #315",
+      "Output does not treat a red optional/informational check as equivalent to a red required check"
+    ]
+  }
+]

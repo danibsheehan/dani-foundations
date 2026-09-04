@@ -1,0 +1,56 @@
+[
+  {
+    "id": "component-testbed-input-output",
+    "prompt": "Write a Vitest test for this Angular component:\n\n```typescript\n@Component({\n  selector: 'app-toggle',\n  template: `<button (click)=\"onClick()\">{{ label }}</button>`,\n})\nexport class ToggleComponent {\n  @Input() label = 'Toggle';\n  @Output() toggled = new EventEmitter<boolean>();\n  private on = false;\n  onClick() {\n    this.on = !this.on;\n    this.toggled.emit(this.on);\n  }\n}\n```",
+    "assertions": [
+      "Output uses TestBed.configureTestingModule and TestBed.createComponent to create the fixture",
+      "Output calls fixture.detectChanges() before asserting on the rendered template",
+      "Output sets the label @Input and asserts it renders in the template",
+      "Output subscribes to the toggled @Output and asserts it emits true after triggerng onClick",
+      "Output triggers the click via the component method or a DOM click on the button, then re-runs detectChanges if needed"
+    ]
+  },
+  {
+    "id": "service-http-testing-controller",
+    "prompt": "Write a test for this Angular service:\n\n```typescript\n@Injectable({ providedIn: 'root' })\nexport class OrderService {\n  constructor(private http: HttpClient) {}\n  getOrder(id: string) {\n    return this.http.get<Order>(`/api/orders/${id}`);\n  }\n}\n```",
+    "assertions": [
+      "Output uses provideHttpClient() and provideHttpClientTesting() rather than the legacy HttpClientTestingModule",
+      "Output uses HttpTestingController to expectOne on the exact URL (/api/orders/<id>)",
+      "Output asserts the request method is GET",
+      "Output calls req.flush(mockData) and asserts the subscribed result equals mockData",
+      "Output calls httpMock.verify() in an afterEach",
+      "Output includes an error-path case simulating a 4xx/5xx response via req.flush with an error status"
+    ]
+  },
+  {
+    "id": "observable-firstvaluefrom",
+    "prompt": "Write a test for this component method that exposes an observable:\n\n```typescript\nexport class PriceComponent {\n  value$ = this.priceService.currentPrice$;\n  constructor(private priceService: PriceService) {}\n}\n```\n\nAssume PriceService.currentPrice$ is a BehaviorSubject seeded with a mock value in the test.",
+    "assertions": [
+      "Output uses firstValueFrom (or an equivalent async/await pattern) to resolve component.value$ rather than a synchronous subscribe-and-hope pattern",
+      "Output provides a mocked PriceService with a BehaviorSubject as currentPrice$",
+      "Output asserts the resolved value matches the seeded mock value",
+      "The test is declared async and awaits the resolved value before asserting"
+    ]
+  },
+  {
+    "id": "router-navigation-spy",
+    "prompt": "Write a test for this component method:\n\n```typescript\nexport class OrderDetailComponent {\n  constructor(private router: Router, private route: ActivatedRoute) {}\n  goBack() {\n    this.router.navigate(['/orders']);\n  }\n}\n```",
+    "assertions": [
+      "Output injects Router via TestBed.inject(Router) and spies on its navigate method with vi.spyOn",
+      "Output calls component.goBack() and asserts router.navigate was called with ['/orders']",
+      "Output does not perform a real navigation or rely on browser location changes",
+      "Output provides RouterTestingModule, a router test provider, or a mocked Router/ActivatedRoute so injection succeeds"
+    ]
+  },
+  {
+    "id": "pipe-and-error-path",
+    "prompt": "Write tests for this pipe and this service method's error handling:\n\n```typescript\n@Pipe({ name: 'truncate' })\nexport class TruncatePipe implements PipeTransform {\n  transform(value: string, max: number): string {\n    return value.length > max ? value.slice(0, max) + '...' : value;\n  }\n}\n\n@Injectable({ providedIn: 'root' })\nexport class ReportService {\n  constructor(private http: HttpClient) {}\n  getReport(id: string) {\n    return this.http.get<Report>(`/api/reports/${id}`).pipe(\n      catchError((err) => throwError(() => new Error('report fetch failed')))\n    );\n  }\n}\n```",
+    "assertions": [
+      "Output tests TruncatePipe by instantiating it directly (new TruncatePipe()) without TestBed, since it has no Angular DI dependencies",
+      "Output includes a pipe case where the string is shorter than max (returned unchanged) and one where it's longer (truncated with '...')",
+      "Output tests ReportService's error path using HttpTestingController, flushing an error response",
+      "Output asserts the resulting observable errors with the mapped 'report fetch failed' message, not the raw HTTP error",
+      "Output calls httpMock.verify() for the service test"
+    ]
+  }
+]

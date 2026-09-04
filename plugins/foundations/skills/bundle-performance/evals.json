@@ -1,0 +1,42 @@
+[
+  {
+    "id": "measure-bundle-size-after-upgrade",
+    "prompt": "I just upgraded a few dependencies including a charting library. Check whether this meaningfully changed our bundle size.",
+    "assertions": [
+      "Output runs a production build before measuring, not a dev-mode check",
+      "Output checks for an existing bundle-report/build:report script in this repo before reaching for an external tool",
+      "Output builds with the same base-path/env config CI uses for the deploy-shaped build, if this repo has one, before comparing numbers",
+      "Output reports asset sizes with both raw and gzip figures, largest first"
+    ]
+  },
+  {
+    "id": "dynamic-import-for-heavy-rare-module",
+    "prompt": "We're adding a rich-text editor library that's only used on the rarely-visited 'advanced settings' page. Here's the current import:\n\n```js\nimport RichTextEditor from 'heavy-rte-library';\n```",
+    "assertions": [
+      "Output recommends using dynamic import() to load the library only when the advanced settings page is visited",
+      "Output does not recommend adding it as a top-level/static import in the main bundle",
+      "Output notes checking the library's size impact before adding it as a dependency",
+      "Output's suggested code shows the import() call scoped to the relevant route/component, not the app entry point"
+    ]
+  },
+  {
+    "id": "before-after-comparison-methodology",
+    "prompt": "Did this refactor make the bundle bigger or smaller? Compare the before and after builds.",
+    "assertions": [
+      "Output compares sizes and asset counts, not hashed chunk filenames, between the two builds",
+      "Output notes or assumes both builds were run on the same machine for a fair comparison",
+      "Output does not conclude a size change based solely on filenames differing between builds",
+      "Output reports the comparison using raw and/or gzip size deltas"
+    ]
+  },
+  {
+    "id": "production-preview-spot-check",
+    "prompt": "I changed several imports to use dynamic import() for code splitting across the app. Confirm this didn't break anything before I call it done.",
+    "assertions": [
+      "Output rebuilds a production build after the import-graph change, not just relying on dev mode",
+      "Output spot-checks the production preview (e.g. serving the built output) rather than only checking dev mode behavior",
+      "Output checks for missing/failed chunk loads or wrong-origin asset issues in the production build",
+      "Output does not declare the change done without running the test suite where logic changed, if any did"
+    ]
+  }
+]

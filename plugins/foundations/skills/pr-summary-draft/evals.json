@@ -1,0 +1,42 @@
+[
+  {
+    "id": "clear-intent-why-first-summary",
+    "prompt": "Draft a PR summary for this branch. The diff shows: `CardEffect.ts` was changed to gate a shimmer animation recalculation behind an `IntersectionObserver`, and `Card.tsx` now passes a ref to it. Commit message: \"fix: stop shimmer recalculating for off-screen cards\".",
+    "assertions": [
+      "Output leads the Summary with the why/motivation (shimmer recalculating for off-screen cards costing paint time), not a file list",
+      "Output is 1-3 short bullets, not a restatement of commit subjects or a 'Changed X.ts, Y.tsx' line",
+      "Output includes a How-to-verify section with concrete steps or commands, not left blank",
+      "Output does not fabricate motivation beyond what the diff/commit message actually supports"
+    ]
+  },
+  {
+    "id": "ambiguous-intent-asks-instead-of-guessing",
+    "prompt": "Draft a PR summary for this branch. The diff touches five unrelated files: a typo fix in a comment, a dependency version bump, a renamed internal variable, a new unused utility function, and a formatting-only change to a config file. Commit messages are just \"wip\" and \"fix\".",
+    "assertions": [
+      "Output does not invent a single plausible-sounding unifying motivation for this mixed-bag diff",
+      "Output asks the user what the actual intent/grouping of this branch is, rather than guessing",
+      "Output does not proceed to write a full confident Summary before getting clarification",
+      "Output notes the diff appears to be an unrelated mix of changes as the reason for asking"
+    ]
+  },
+  {
+    "id": "existing-scaffolding-not-duplicated",
+    "prompt": "Draft a PR summary. This repo already has a GitHub Action that posts a comment with a path-based verify-command checklist on every PR (visible in .github/workflows/pr-checklist.yml). The diff is a bug fix in the checkout flow.",
+    "assertions": [
+      "Output checks for or acknowledges the existing automated PR scaffolding before writing How-to-verify",
+      "Output's How-to-verify section is minimal or omitted, deferring to the automated checklist rather than duplicating it",
+      "Output's Summary still includes the why/motivation for the checkout flow fix",
+      "Output does not re-derive a mechanical file-path-based verification list that duplicates the bot's own comment"
+    ]
+  },
+  {
+    "id": "existing-pr-preserves-marker-block",
+    "prompt": "Update the description of existing PR #45 with a new Summary reflecting the latest changes. The current PR body contains an HTML comment marker block (e.g. `<!-- automation:verify-checklist:start -->...<!-- automation:verify-checklist:end -->`) that an automation updates on every push.",
+    "assertions": [
+      "Output reads the current PR body first (e.g. via gh pr view --json body) before overwriting it",
+      "Output preserves the automation-managed marker block and its contents untouched in the updated body",
+      "Output updates only the Summary/How-to-verify sections outside the marker block",
+      "Output does not hand-edit or remove the marker block's content"
+    ]
+  }
+]

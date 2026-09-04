@@ -1,0 +1,53 @@
+[
+  {
+    "id": "coalescing-cache-call-count",
+    "prompt": "Write a concurrency test for this coalescing cache loader, which should only call the underlying fetch function once even under concurrent callers for the same key:\n\n```go\nfunc (c *Cache) GetOrLoad(ctx context.Context, key string, fetch func(context.Context, string) (string, error)) (string, error) {\n\t// singleflight-style coalescing implementation\n}\n```",
+    "assertions": [
+      "Output launches multiple goroutines (e.g. 16) calling GetOrLoad concurrently with the same key",
+      "Output asserts the underlying fetch function was called exactly once, not just that all callers received the same value",
+      "Output asserts all goroutines received the same non-error result",
+      "Output uses sync.WaitGroup (or equivalent) to wait for all goroutines before asserting",
+      "Output does not rely on a value-only check that would still pass if fetch were called multiple times returning the same value"
+    ]
+  },
+  {
+    "id": "dedup-on-create-row-count",
+    "prompt": "Write a concurrency test for this dedup-on-create function, which should result in exactly one row in the DB even if called concurrently with the same idempotency key:\n\n```go\nfunc CreateOrder(ctx context.Context, db *sql.DB, idempotencyKey string, order Order) error {\n\t// insert-or-ignore-style dedup implementation\n}\n```",
+    "assertions": [
+      "Output runs CreateOrder concurrently from multiple goroutines with the same idempotencyKey",
+      "Output asserts exactly one row exists in the DB for that key after all goroutines complete, via a count query",
+      "Output does not assert only that no error occurred, without checking the resulting row count",
+      "Output includes a case verifying a failed/erroring create does not leave a partial row behind"
+    ]
+  },
+  {
+    "id": "retry-backoff-injectable-seam",
+    "prompt": "Write tests for this retry function, which retries a code-generator function on collision:\n\n```go\nfunc GenerateUnique(ctx context.Context, generate func() string, exists func(string) bool, maxAttempts int) (string, error) {\n\tfor i := 0; i < maxAttempts; i++ {\n\t\tcandidate := generate()\n\t\tif !exists(candidate) {\n\t\t\treturn candidate, nil\n\t\t}\n\t}\n\treturn \"\", errors.New(\"exhausted attempts\")\n}\n```",
+    "assertions": [
+      "Output injects a generate function that returns a colliding value on the first call and a valid one on a later call, to prove the retry path re-attempts",
+      "Output does not only test the happy path where the first generated value succeeds immediately",
+      "Output includes a case where every attempt collides, asserting the exhausted-attempts error is returned after maxAttempts tries",
+      "Output asserts the exact number of generate() calls made, not just the final outcome"
+    ]
+  },
+  {
+    "id": "config-load-defaults-full-struct",
+    "prompt": "Write a defaults test for this config loader:\n\n```go\ntype Config struct {\n\tPort int\n\tTimeout time.Duration\n\tLogLevel string\n}\n\nfunc Load() Config {\n\treturn Config{\n\t\tPort: envInt(\"PORT\", 8080),\n\t\tTimeout: envDuration(\"TIMEOUT\", 30*time.Second),\n\t\tLogLevel: envString(\"LOG_LEVEL\", \"info\"),\n\t}\n}\n```",
+    "assertions": [
+      "Output maintains an explicit list of every env key Load() reads (PORT, TIMEOUT, LOG_LEVEL) and resets all of them via t.Setenv before the defaults test",
+      "Output asserts the loaded Config equals a full expected Config{} struct literal in one comparison, not field-by-field assertions",
+      "Output does not leave any of the three env keys unreset before checking defaults",
+      "Test would fail if a new field were added to Config but not to the env-key reset list (i.e. the assertion is a full-struct comparison, not partial)"
+    ]
+  },
+  {
+    "id": "typed-error-classifier-table-driven",
+    "prompt": "Write table-driven tests for this classifier function:\n\n```go\nvar ErrNotFound = errors.New(\"not found\")\nvar ErrConflict = errors.New(\"conflict\")\n\nfunc IsRetryable(err error) bool {\n\treturn errors.Is(err, ErrConflict)\n}\n```",
+    "assertions": [
+      "Output includes a nil-error test case",
+      "Output includes a generic/unrelated error case (e.g. errors.New(\"boom\")) asserting IsRetryable returns false",
+      "Output includes individual cases for both ErrNotFound (expected false) and ErrConflict (expected true), tested directly rather than only through a code path that happens to produce them",
+      "Output uses a table-driven structure (a slice of test cases with a name/input/expected fields) rather than separate ad hoc test functions"
+    ]
+  }
+]

@@ -1,0 +1,42 @@
+[
+  {
+    "id": "js-ts-uncovered-behavior-not-bare-lines",
+    "prompt": "Coverage just failed on this branch. The changed file src/lib/parseOrder.ts shows lines 40-52 as uncovered in the coverage report. Those lines contain the error-handling branch for a malformed order payload. Diagnose the gap.",
+    "assertions": [
+      "Output names the specific missing behavior (the malformed-payload error-handling branch), not just 'lines 40-52 are uncovered'",
+      "Output scopes to the changed file(s) on this branch, not unrelated files",
+      "Output reports file:lines mapped to the described missing test case",
+      "Output does not write the missing test itself without being asked, only offers to"
+    ]
+  },
+  {
+    "id": "go-coverage-out-parsing",
+    "prompt": "Diagnose the coverage gap for this Go branch. coverage.out contains this line for the changed file: `internal/billing/invoice.go:88.34,95.2 3 0`. Line 88-95 is the retry-exhausted return path in GenerateInvoice.",
+    "assertions": [
+      "Output correctly identifies the trailing 0 in the coverage.out line as meaning those statements are uncovered",
+      "Output names the specific untested behavior (the retry-exhausted return path), not just the raw line range",
+      "Output references the actual source at that range rather than only the coverage.out numbers",
+      "Output does not misinterpret the numStmts/count fields (3 statements, 0 executions)"
+    ]
+  },
+  {
+    "id": "excluded-file-not-flagged",
+    "prompt": "Coverage dropped on this branch. One changed file, src/canvas/particleRenderer.ts, shows as fully uncovered, but this repo's vite.config.ts lists `src/canvas/**` under test.coverage.exclude because it's WebGL rendering code covered indirectly via UI smoke tests.",
+    "assertions": [
+      "Output checks the coverage config's exclude list before reporting gaps",
+      "Output does not flag particleRenderer.ts as an untested gap since it's deliberately excluded from coverage measurement",
+      "Output still reports genuine gaps in any other changed, non-excluded files if present in the scenario",
+      "Output explains why particleRenderer.ts isn't counted, rather than silently omitting it with no explanation"
+    ]
+  },
+  {
+    "id": "reports-gap-does-not-write-tests-unprompted",
+    "prompt": "Why did coverage fail on this branch? Just tell me what's missing.",
+    "assertions": [
+      "Output provides a diagnosis (file:lines, what's untested, the specific missing test case) without writing any test code",
+      "Output offers to write the missing tests rather than assuming it should and doing so immediately",
+      "Output does not create or edit a test file as part of this response",
+      "Output's report format is a list mapping file:lines to missing behavior, per the skill's reporting convention"
+    ]
+  }
+]

@@ -1,0 +1,42 @@
+[
+  {
+    "id": "ssrf-safe-url-construction",
+    "prompt": "Add a proxy route that forwards requests to an upstream API based on a client-supplied resource path:\n\n```js\napp.get('/api/proxy/:resource', async (req, res) => {\n  const upstream = await fetch(`https://internal-api.example.com/${req.params.resource}`);\n  res.json(await upstream.json());\n});\n```",
+    "assertions": [
+      "Output does not build the upstream URL by directly concatenating the raw req.params.resource value into the path",
+      "Output validates the resource param against an allowlist of known subpaths or a fixed template before constructing the URL",
+      "Output keeps the upstream base URL/host in server-side config/env, not derived from the request",
+      "Output rejects an invalid/unrecognized resource value with a 4xx before attempting the upstream call"
+    ]
+  },
+  {
+    "id": "generic-error-hides-upstream-detail",
+    "prompt": "This handler leaks the raw upstream error to the client:\n\n```js\napp.get('/api/data', async (req, res) => {\n  try {\n    const r = await fetch(UPSTREAM_URL);\n    if (!r.ok) throw new Error(await r.text());\n    res.json(await r.json());\n  } catch (err) {\n    res.status(502).json({ error: err.message });\n  }\n});\n```\n\nThis repo already threads a request ID via an X-Request-ID header/middleware.",
+    "assertions": [
+      "Output replaces the raw err.message in the client response with a generic message (e.g. 'failed to reach upstream service')",
+      "Output logs the actual upstream error detail server-side",
+      "Output includes the existing request ID in both the server-side log and the client-facing response for correlation",
+      "Output does not return the raw upstream response body or stack trace to the client"
+    ]
+  },
+  {
+    "id": "explicit-cors-rate-limit-body-cap",
+    "prompt": "Review this new Express route setup for hardening gaps:\n\n```js\napp.use(cors());\napp.use(express.json());\napp.post('/api/submit', (req, res) => {\n  // handle submission\n});\n```",
+    "assertions": [
+      "Output flags the bare cors() call as allowing all origins and recommends an explicit origin allowlist instead",
+      "Output recommends adding a rate limiter with a documented, explicit limit rather than leaving the route unbounded",
+      "Output recommends capping the request body size (e.g. via express.json({ limit: ... })) rather than leaving it unbounded",
+      "Output does not recommend disabling CORS/rate-limiting for convenience without an explicit, deliberate reason"
+    ]
+  },
+  {
+    "id": "no-real-upstream-in-tests",
+    "prompt": "Write a unit test for this handler, which calls an external payments API:\n\n```js\nasync function chargeCard(cardToken, amount) {\n  const r = await fetch('https://api.payments.example.com/charge', {\n    method: 'POST',\n    body: JSON.stringify({ cardToken, amount }),\n  });\n  return r.json();\n}\n```",
+    "assertions": [
+      "Output mocks the fetch call or the HTTP client module rather than calling the real payments API",
+      "Output does not make any real network request to api.payments.example.com during the test",
+      "Output includes both a success case and an upstream-failure case using the mock",
+      "Output asserts on the request body/args sent to the mocked client, not just the final return value"
+    ]
+  }
+]

@@ -1,0 +1,32 @@
+[
+  {
+    "id": "base-path-derived-not-hardcoded",
+    "prompt": "Set up the GitHub Pages deploy workflow for this Vite-based project site repo called 'widget-gallery'. The build needs its base path set correctly.",
+    "assertions": [
+      "Output sets Vite's base config to '/widget-gallery/' with both leading and trailing slash",
+      "Output prefers deriving the repository name at build time (e.g. via ${{ github.event.repository.name }}) rather than hardcoding 'widget-gallery' directly",
+      "If the value is hardcoded, output keeps it in exactly one place and notes it should be updated deliberately on a rename",
+      "Output does not omit the trailing slash or leading slash from the base path"
+    ]
+  },
+  {
+    "id": "split-workflow-artifact-poisoning-avoidance",
+    "prompt": "This repo has a test workflow that uploads the build artifact, and a separate deploy workflow triggered by workflow_run that downloads it and deploys. Review this deploy job for issues:\n\n```yaml\njobs:\n  deploy:\n    steps:\n      - uses: actions/checkout@v4\n      - uses: actions/download-artifact@v4\n        with:\n          name: build-output\n          path: .\n      - uses: actions/deploy-pages@v4\n```",
+    "assertions": [
+      "Output flags combining actions/checkout with actions/download-artifact in the same job as an artifact-poisoning risk",
+      "Output recommends downloading the artifact into a location like ${{ runner.temp }} instead of the workspace root mixed with a checkout",
+      "Output recommends removing the checkout step from this job if the deploy step doesn't actually need repo source",
+      "Output references this as a known CodeQL-flagged risk pattern"
+    ]
+  },
+  {
+    "id": "local-verification-production-build-not-dev-mode",
+    "prompt": "I changed the app's base-path handling for the Pages deploy. How should I verify it works before pushing?",
+    "assertions": [
+      "Output recommends building with the same base-path CI uses, not just running dev mode",
+      "Output recommends serving/previewing the actual build output locally rather than relying on the dev server",
+      "Output notes that a wrong base-path setting typically shows up as missing JS/CSS or failed chunk loads, not a clean error",
+      "Output does not treat a passing dev-mode check as sufficient verification for base-path correctness"
+    ]
+  }
+]

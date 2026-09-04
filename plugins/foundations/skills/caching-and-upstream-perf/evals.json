@@ -1,0 +1,42 @@
+[
+  {
+    "id": "coalescing-concurrent-misses",
+    "prompt": "This endpoint fetches product data from a slow upstream API. Under load, many concurrent requests for the same product ID all miss the cache and each call the upstream separately:\n\n```js\nasync function getProduct(id) {\n  const cached = cache.get(id);\n  if (cached) return cached;\n  const data = await fetchFromUpstream(id);\n  cache.set(id, data);\n  return data;\n}\n```\n\nFix the thundering-herd problem.",
+    "assertions": [
+      "Output introduces a coalescing/singleflight-style pattern (e.g. a GetOrLoad helper or in-flight-promise map) so concurrent misses for the same key trigger exactly one upstream call",
+      "Output does not just add a raw get/set cache without addressing concurrent-miss coalescing",
+      "Output explains that this avoids a thundering-herd hitting the upstream at once",
+      "Output's fix ensures all concurrent callers still receive the correct resulting data"
+    ]
+  },
+  {
+    "id": "ttl-matched-to-volatility",
+    "prompt": "We're adding caching for two endpoints: one returns a live stock price (changes every few seconds), the other returns a company's registered address (changes maybe once a year). What TTLs should each use?",
+    "assertions": [
+      "Output recommends a short TTL (seconds) for the live stock price endpoint",
+      "Output recommends a much longer TTL (hours or more) for the stable company-address endpoint",
+      "Output does not recommend the same blanket TTL for both endpoints",
+      "Output notes that every cache entry should have a TTL, none left uncached indefinitely without one"
+    ]
+  },
+  {
+    "id": "debounce-and-abort-search-input",
+    "prompt": "This search input calls the backend on every keystroke and doesn't cancel stale requests:\n\n```jsx\nfunction Search() {\n  const [results, setResults] = useState([]);\n  function onChange(e) {\n    fetchSearch(e.target.value).then(setResults);\n  }\n  return <input onChange={onChange} />;\n}\n```",
+    "assertions": [
+      "Output adds debouncing (a few hundred ms) so the backend isn't called on every keystroke",
+      "Output uses an AbortController (or equivalent) to cancel an in-flight request when a new one supersedes it or the component unmounts",
+      "Output does not apply the old response to state if a newer request has since superseded it",
+      "Output's debounce delay is a reasonable typical value, not an extreme outlier"
+    ]
+  },
+  {
+    "id": "n-plus-one-fanout-batching",
+    "prompt": "This function fetches details for a list of order IDs by calling the upstream API once per ID in a loop:\n\n```js\nasync function getOrderDetails(orderIds) {\n  const results = [];\n  for (const id of orderIds) {\n    results.push(await fetchOrder(id));\n  }\n  return results;\n}\n```\n\nThe upstream API has a batch endpoint: POST /orders/batch with a list of IDs.",
+    "assertions": [
+      "Output recommends/implements using the upstream's batch endpoint instead of one call per ID",
+      "Output avoids re-fetching shared sub-results already available from cache when applicable",
+      "Output does not leave the N+1 per-ID fan-out pattern in place",
+      "Output still returns results in a shape usable by the original caller (matching order/IDs)"
+    ]
+  }
+]

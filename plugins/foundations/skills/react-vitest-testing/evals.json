@@ -1,0 +1,43 @@
+[
+  {
+    "id": "hook-mocked-api-async-states",
+    "prompt": "Write Vitest + Testing Library tests for this hook:\n\n```tsx\nimport { useEffect, useState } from 'react';\nimport { fetchUser } from '../api/userClient';\n\nexport function useUser(id: string) {\n  const [data, setData] = useState<User | null>(null);\n  const [error, setError] = useState<Error | null>(null);\n  const [loading, setLoading] = useState(false);\n\n  useEffect(() => {\n    setLoading(true);\n    fetchUser(id)\n      .then(setData)\n      .catch(setError)\n      .finally(() => setLoading(false));\n  }, [id]);\n\n  return { data, error, loading };\n}\n```",
+    "assertions": [
+      "Output mocks the api client module (e.g. vi.mock('../api/userClient')) rather than calling a real backend",
+      "Output uses renderHook from @testing-library/react",
+      "Output asserts on result.current.data (or .error) via waitFor, not only on loading === false",
+      "Output includes both a success case and an error/rejected-promise case",
+      "Output does not race by checking only the loading flag as proof the async call finished"
+    ]
+  },
+  {
+    "id": "component-loading-error-empty-states",
+    "prompt": "Write tests for this component, which fetches and displays a list of orders:\n\n```tsx\nfunction OrderList() {\n  const { data, error, loading } = useOrders();\n  if (loading) return <p>Loading orders...</p>;\n  if (error) return <p role=\"alert\">Failed to load orders</p>;\n  if (!data?.length) return <p>No orders yet</p>;\n  return (\n    <ul>\n      {data.map((o) => (\n        <li key={o.id}>{o.name}</li>\n      ))}\n    </ul>\n  );\n}\n```",
+    "assertions": [
+      "Output covers the loading, error, and empty states as separate test cases",
+      "Output queries by role/accessible text (e.g. getByRole('alert'), getByText) rather than test IDs or DOM structure",
+      "Output mocks useOrders (or the underlying API client it calls) rather than hitting a real network call",
+      "Output includes a success case asserting the rendered list items"
+    ]
+  },
+  {
+    "id": "debounced-search-input",
+    "prompt": "Write a test for this debounced search input component:\n\n```tsx\nfunction SearchBox({ onSearch }: { onSearch: (q: string) => void }) {\n  const [value, setValue] = useState('');\n  useEffect(() => {\n    const t = setTimeout(() => onSearch(value), 300);\n    return () => clearTimeout(t);\n  }, [value, onSearch]);\n  return <input value={value} onChange={(e) => setValue(e.target.value)} />;\n}\n```\n\nAssert that typing triggers onSearch only after the debounce delay, with the final value.",
+    "assertions": [
+      "Output does not combine userEvent typing with fake timers (vi.useFakeTimers) in a way that would deadlock",
+      "Output either uses real timers with an awaited setTimeout-based flush, or waitFor, to observe the debounced call",
+      "Output asserts onSearch was called with the final typed value, not an intermediate keystroke value",
+      "Output asserts onSearch was not called before the debounce delay elapsed"
+    ]
+  },
+  {
+    "id": "mock-hoisting-import-meta-env",
+    "prompt": "This component reads import.meta.env at import time and uses a mocked API module:\n\n```tsx\n// featureFlags.ts\nexport const FEATURE_X_ENABLED = import.meta.env.VITE_FEATURE_X === 'true';\n\n// Widget.tsx\nimport { FEATURE_X_ENABLED } from './featureFlags';\nimport { loadWidgetData } from '../api/widgetClient';\n```\n\nWrite a test that verifies Widget's behavior both when VITE_FEATURE_X is 'true' and when it isn't, along with mocking loadWidgetData.",
+    "assertions": [
+      "Output places vi.mock factories for widgetClient at the top of the file or uses vi.hoisted, before any production import that would use them",
+      "Output uses vi.resetModules() plus a dynamic import() to re-evaluate featureFlags.ts under different import.meta.env values, rather than a single static import",
+      "Output does not assume a static top-level import will pick up a changed env value between test cases",
+      "Output includes at least one case for each env value (true and not-true)"
+    ]
+  }
+]
