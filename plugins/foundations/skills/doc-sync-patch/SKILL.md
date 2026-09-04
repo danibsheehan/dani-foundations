@@ -17,6 +17,11 @@ reference implementation, already shared by more than one of these repos), it on
 touches the manifest but never the docs, so after almost every version-bump PR a human has to
 hand-edit the docs that quote versions. This skill does that patch.
 
+This skill is scoped to stack-*version* claims and is gated on that external checker existing.
+For broader, self-directed drift detection with no checker required (documented
+routes/commands/exports, config tables, project layout vs. what the code actually has), see
+**`foundations:doc-writer`**'s Drift Check reference instead.
+
 ## Order of work
 
 ### 1. Read the current failure (or the source of truth directly)

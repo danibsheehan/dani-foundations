@@ -18,7 +18,8 @@ how a project wires it in._
 
 - **`foundations` plugin** (`plugins/foundations/`) — 19 shared skills, each a short
   instruction file Claude Code reads automatically when it's relevant:
-  - `doc-writer` — README / API doc (JSDoc/GoDoc) / inline comment generation
+  - `doc-writer` — README / API doc (JSDoc/GoDoc) / inline comment generation, plus a
+    self-directed drift check (docs vs. actual code) reference
   - `pr-ready` — pre-PR CI-parity checklist and PR description guidance
   - `definition-of-done` — post-edit format/lint/test/build verification
   - `dependabot-triage` — reviews and classifies open Dependabot PRs by risk
