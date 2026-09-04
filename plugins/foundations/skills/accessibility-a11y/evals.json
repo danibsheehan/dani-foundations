@@ -1,0 +1,43 @@
+[
+  {
+    "id": "custom-widget-role-keyboard",
+    "prompt": "Make this custom dropdown accessible. It's currently a div-based menu with no keyboard support:\n\n```html\n<div class=\"dropdown-toggle\" onclick=\"toggleMenu()\">Options</div>\n<div class=\"dropdown-menu\" id=\"menu\">\n  <div class=\"item\" onclick=\"select('a')\">Option A</div>\n  <div class=\"item\" onclick=\"select('b')\">Option B</div>\n</div>\n```",
+    "assertions": [
+      "Output adds an appropriate role (e.g. button/menu/menuitem) to the interactive divs",
+      "Output adds tabindex=\"0\" to the toggle and items so they're keyboard-reachable",
+      "Output adds a descriptive aria-label or accessible name to the toggle",
+      "Output adds keydown handling for Space/Enter on the custom controls, not just onclick",
+      "Output does not rely on click-only interaction for any of the custom controls"
+    ]
+  },
+  {
+    "id": "live-region-status-and-errors",
+    "prompt": "This component shows a loading spinner then either results or an error message, but none of it is announced to screen readers:\n\n```jsx\nfunction SearchResults({ loading, error, results }) {\n  if (loading) return <div className=\"spinner\" />;\n  if (error) return <div className=\"error-banner\">{error}</div>;\n  return <ul>{results.map(r => <li key={r.id}>{r.name}</li>)}</ul>;\n}\n```",
+    "assertions": [
+      "Output adds role=\"status\" or aria-busy to the loading state",
+      "Output adds role=\"alert\" to the error banner",
+      "Output uses a visually-hidden aria-live=\"polite\" region (with aria-atomic if appropriate) for dynamic status text that isn't already covered by role=alert/status",
+      "Output does not leave the loading/error state changes silent to assistive tech"
+    ]
+  },
+  {
+    "id": "reduced-motion-skips-fetch-not-just-playback",
+    "prompt": "This component loads and plays a Lottie animation on mount:\n\n```jsx\nfunction Celebration() {\n  const [data, setData] = useState(null);\n  useEffect(() => {\n    fetch('/animations/confetti.json').then(r => r.json()).then(setData);\n  }, []);\n  return data ? <Lottie animationData={data} autoplay /> : null;\n}\n```\n\nRespect prefers-reduced-motion.",
+    "assertions": [
+      "Output checks prefers-reduced-motion before initiating the fetch call, not just before calling play/autoplay",
+      "Output skips the network request entirely when reduced motion is preferred, rather than fetching the JSON and only suppressing playback",
+      "Output still renders a reasonable non-animated fallback or nothing, rather than a broken/missing element",
+      "Output does not fetch the animation data unconditionally regardless of the media query"
+    ]
+  },
+  {
+    "id": "focus-management-after-async-content",
+    "prompt": "After a search completes, new results appear below the search box, but keyboard/screen-reader users have no indication focus should move there:\n\n```jsx\nfunction Search() {\n  const [results, setResults] = useState(null);\n  async function onSearch(q) {\n    const r = await fetchResults(q);\n    setResults(r);\n  }\n  return (\n    <div>\n      <input onChange={e => onSearch(e.target.value)} />\n      {results && <section><h2>Results</h2>{/* ...list... */}</section>}\n    </div>\n  );\n}\n```",
+    "assertions": [
+      "Output moves focus programmatically to the results heading/landmark after results appear",
+      "Output adds tabindex=\"-1\" to the target heading/landmark so it's focusable without being in the natural tab order",
+      "Output calls .focus() on that element via a ref after the content renders",
+      "Output does not attempt to call .focus() directly on non-focusable content without the tabindex=\"-1\" addition"
+    ]
+  }
+]

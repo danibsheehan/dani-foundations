@@ -1,0 +1,32 @@
+[
+  {
+    "id": "npm-full-gate-sequence",
+    "prompt": "Run the pre-PR checks for this npm-based single-stack repo before I open a PR.",
+    "assertions": [
+      "Output runs format:check, lint, test:coverage, and build, in that order",
+      "Output uses test:coverage rather than a quick/watch test run for this pre-PR check",
+      "Output checks whether this repo's CI runs npm audit --audit-level=high or a stack-docs-drift check, and runs those too if so",
+      "Output fixes any failures before considering the checks passed, rather than reporting a failure as done"
+    ]
+  },
+  {
+    "id": "go-multi-stack-equivalent",
+    "prompt": "Run the pre-PR checks for this repo before I open a PR. It's a Go backend with a separate frontend, using a Makefile for CI parity.",
+    "assertions": [
+      "Output does not run npm-based commands (format:check/lint/test:coverage/build) as the primary gate for this repo",
+      "Output looks for and uses this repo's actual make-based target (e.g. make ci-local) or its own local pr-ready-equivalent skill/AGENTS.md for the exact command",
+      "Output matches what the repo's CI workflow actually runs on a pull request",
+      "Output does not assume the npm command set is a safe default for a Go/multi-stack repo"
+    ]
+  },
+  {
+    "id": "does-not-create-pr-unless-asked",
+    "prompt": "Run the pre-PR checks on my current branch and get the PR description ready.",
+    "assertions": [
+      "Output runs the local CI-parity checks (format/lint/test/build)",
+      "Output prepares a Summary and How-to-verify description (e.g. per the pr-summary-draft skill)",
+      "Output does not run gh pr create or otherwise open/push a PR, since the user did not explicitly ask for that",
+      "Output presents the prepared description for review rather than assuming it should be submitted immediately"
+    ]
+  }
+]
