@@ -1,0 +1,42 @@
+[
+  {
+    "id": "correct-finding-verified-and-fixed",
+    "prompt": "Bugbot commented on PR #88: \"Line 42 in src/auth/session.ts: the session expiry check uses `>` instead of `>=`, so a session expiring exactly at the threshold is treated as still valid for one extra tick.\" Fix this.",
+    "assertions": [
+      "Output reads the actual cited file/line before acting, rather than accepting the comment's explanation as fact",
+      "Output confirms the logic gap by tracing the comparison in session.ts, not just agreeing it sounds plausible",
+      "Output applies the narrowest fix (changing the comparison operator) matching existing code conventions, not a broader rewrite",
+      "Output re-runs a relevant check (test suite or the specific test covering expiry) to confirm the fix actually resolves it, not just 'looks right'"
+    ]
+  },
+  {
+    "id": "bots-suggested-patch-is-wrong",
+    "prompt": "Bugbot flagged this and suggested a fix: \"The retry loop in fetchWithRetry never applies backoff between attempts. Suggested fix: add `await sleep(1000)` after each failed attempt.\" Apply the fix.",
+    "assertions": [
+      "Output reads the actual fetchWithRetry implementation before applying anything",
+      "If the codebase already has a configurable backoff helper/pattern elsewhere, output uses that instead of blindly inserting the bot's fixed 1000ms sleep",
+      "Output does not apply the suggested patch verbatim without evaluating whether it fits this codebase's existing conventions",
+      "Output verifies the fix with an actual test run, not just visual inspection"
+    ]
+  },
+  {
+    "id": "ambiguous-ground-truth-no-confident-guess",
+    "prompt": "Bugbot claims: \"This component violates the accessibility requirement in our design doc, which says all interactive elements need a visible focus ring.\" You find the design doc's accessibility section and the codebase's own a11y skill/AGENTS.md describe conflicting requirements for this case.",
+    "assertions": [
+      "Output explicitly states that the ground truth is ambiguous (conflicting sources) rather than picking one silently",
+      "Output does not confidently apply a fix based on only one of the two conflicting sources without flagging the conflict",
+      "Output suggests treating the change as a live, easily-rollback-able test or asks the user which source should govern, rather than guessing",
+      "Output does not declare the finding definitively correct or incorrect without resolving the ambiguity first"
+    ]
+  },
+  {
+    "id": "fix-recheck-for-adjacent-regression",
+    "prompt": "Bugbot flagged: \"The tier classification in classifyRisk() puts a 0.x-to-1.x version bump in 'low risk' when it should be 'needs a look'.\" Fix the conditional logic and confirm nothing else broke.",
+    "assertions": [
+      "Output identifies and fixes the specific conditional branch handling the 0.x-to-1.x case",
+      "After fixing, output re-runs the original finding's reasoning (or equivalent test cases) against adjacent classification branches (e.g. regular minor bumps, major bumps) to check the fix didn't misclassify a different case",
+      "Output does not declare the fix complete solely because CI is green, without checking the specific classification behavior end-to-end",
+      "Output does not silently skip step 5 (checking for a newly introduced gap) given this fix touches tiered/conditional logic"
+    ]
+  }
+]

@@ -1,0 +1,32 @@
+[
+  {
+    "id": "patches-every-flagged-location",
+    "prompt": "check_stack_docs.py failed with two errors: \"README.md badge shows Node 18, expected Node 20 (from .nvmrc)\" and \"AGENTS.md Stack line shows Node 18, expected Node 20\". Fix this.",
+    "assertions": [
+      "Output patches both the README badge and the AGENTS.md Stack line, not just one",
+      "Output reads the actual value from .nvmrc rather than assuming or guessing '20'",
+      "Output re-runs the stack-docs checker after patching to confirm both errors are resolved",
+      "Output does not skip either flagged location"
+    ]
+  },
+  {
+    "id": "values-only-no-manifest-change",
+    "prompt": "check_stack_docs.py failed: \"README.md says 'Built with React 17' but package.json shows react@18.2.0\". Fix the doc.",
+    "assertions": [
+      "Output edits only the version value in the README sentence, not the surrounding prose wording",
+      "Output does not modify package.json or bump any dependency as part of this fix",
+      "Output reads the actual version from package.json rather than guessing",
+      "Output treats this strictly as a docs sync, not a dependency upgrade"
+    ]
+  },
+  {
+    "id": "still-failing-after-patch-rereads-exact-error",
+    "prompt": "You patched README.md's Go version badge from 1.20 to 1.21 based on go.mod, but check_stack_docs.py still fails with: \"README.md line 5: expected 'Go 1.21.3', found 'Go 1.21'\". What now?",
+    "assertions": [
+      "Output re-reads the exact error message rather than re-guessing a version",
+      "Output reads the precise expected value (1.21.3, the full patch version) from the actual source (go.mod or equivalent) rather than assuming the minor version alone was sufficient",
+      "Output patches README.md to match the exact expected string",
+      "Output re-runs the checker again to confirm it now passes"
+    ]
+  }
+]
