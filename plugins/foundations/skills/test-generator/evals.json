@@ -1,0 +1,44 @@
+[
+  {
+    "id": "plain-module-happy-and-edge-cases",
+    "prompt": "Generate tests for this plain TypeScript function:\n\n```typescript\nexport function chunkIds(ids: string[], size: number): string[][] {\n  if (!ids.length || size <= 0) return [];\n  const chunks: string[][] = [];\n  for (let i = 0; i < ids.length; i += size) {\n    chunks.push(ids.slice(i, i + size));\n  }\n  return chunks;\n}\n```",
+    "assertions": [
+      "Output includes a happy-path case chunking a non-empty array into expected groups",
+      "Output includes an edge case for an empty ids array returning []",
+      "Output includes an edge case for size <= 0 returning []",
+      "Output uses descriptive it() names describing behavior and condition, not generic names like 'works'",
+      "Output places the test file next to the source file (chunkIds.test.ts)"
+    ]
+  },
+  {
+    "id": "async-function-success-and-rejection",
+    "prompt": "Generate tests for this async function:\n\n```typescript\nexport async function fetchAndParse(url: string, fetcher: (u: string) => Promise<Response>): Promise<Record<string, unknown>> {\n  const res = await fetcher(url);\n  if (!res.ok) throw new Error(`request failed: ${res.status}`);\n  return res.json();\n}\n```",
+    "assertions": [
+      "Output mocks the fetcher parameter rather than performing a real network call",
+      "Output includes a success case asserting the parsed JSON result",
+      "Output includes a failure case where fetcher resolves with a non-ok response, asserting the thrown error message",
+      "Output awaits the async assertions correctly (e.g. using rejects/resolves or async/await with try/catch)"
+    ]
+  },
+  {
+    "id": "coverage-checklist-end-to-end",
+    "prompt": "Generate a full test suite for this module, applying the coverage checklist (happy path, edge cases, mocks reset, one assertion focus per test, descriptive names):\n\n```typescript\nexport class RateGate {\n  private count = 0;\n  constructor(private max: number) {}\n  tryEnter(): boolean {\n    if (this.count >= this.max) return false;\n    this.count++;\n    return true;\n  }\n  reset() { this.count = 0; }\n}\n```",
+    "assertions": [
+      "Output includes a beforeEach or fresh-instance pattern resetting state between tests",
+      "Output covers the happy path (tryEnter succeeds while under max)",
+      "Output covers the boundary/edge case (tryEnter fails once max is reached)",
+      "Output covers reset() restoring the ability to enter again",
+      "Each it() block focuses on one behavior rather than asserting multiple unrelated things",
+      "Output uses descriptive test names stating the expected behavior and condition"
+    ]
+  },
+  {
+    "id": "defers-to-framework-specific-skill",
+    "prompt": "Generate tests for this React component:\n\n```tsx\nfunction Greeting({ name }: { name: string }) {\n  return <p>Hello, {name}!</p>;\n}\n```",
+    "assertions": [
+      "Output acknowledges or defers to this repo's framework-specific testing skill/AGENTS.md (e.g. React + Vitest + Testing Library conventions) for mounting/rendering and mocking, rather than inventing generic framework-agnostic rendering code",
+      "Output still applies the framework-agnostic coverage checklist (happy path, edge cases) from this skill",
+      "Output does not fabricate a test runner or rendering approach inconsistent with what a React-specific skill would specify (e.g. does not skip Testing Library conventions if the repo has them)"
+    ]
+  }
+]

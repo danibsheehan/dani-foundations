@@ -1,0 +1,31 @@
+[
+  {
+    "id": "npm-clean-pass",
+    "prompt": "I just added a new `formatCurrency` utility function and its usage in a component in this npm-based TypeScript repo. Verify the change is done.",
+    "assertions": [
+      "Output runs format:check, lint, test (run or coverage), and build in that order",
+      "Output runs them from the repo root",
+      "Output reports the change as done only after all four commands succeed",
+      "Output does not skip straight to declaring success without actually running the commands"
+    ]
+  },
+  {
+    "id": "lint-failure-needs-fix",
+    "prompt": "I edited src/utils/formatDate.ts to add a new export. Run the definition-of-done check. (Assume `npm run lint` fails with an unused-variable error in the edited file.)",
+    "assertions": [
+      "Output surfaces the lint failure rather than ignoring it or reporting success",
+      "Output fixes the underlying issue (or clearly states what needs fixing) before considering the task complete",
+      "Output re-runs lint (or the full sequence) after the fix to confirm it now passes",
+      "Output does not report the task done while a check is still failing"
+    ]
+  },
+  {
+    "id": "small-localized-edit-scoped-check",
+    "prompt": "I fixed a typo in a single error message string inside one function in src/lib/validate.ts. What should I run to confirm this is done?",
+    "assertions": [
+      "Output recommends the smallest relevant check for this localized edit (e.g. lint and/or the focused test file) rather than requiring the full format/lint/test/build sequence",
+      "Output does not insist on a full deploy-shaped build for this small change",
+      "Output does not treat this as requiring the pr-ready full-coverage flow"
+    ]
+  }
+]

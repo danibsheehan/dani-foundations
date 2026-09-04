@@ -1,0 +1,48 @@
+[
+  {
+    "id": "fake-upstream-http-api",
+    "prompt": "Write httptest-based tests for this Go handler. It calls an external weather API and returns the current temperature:\n\n```go\nfunc GetTemperature(client *http.Client, baseURL string) http.HandlerFunc {\n\treturn func(w http.ResponseWriter, r *http.Request) {\n\t\tcity := r.URL.Query().Get(\"city\")\n\t\tif city == \"\" {\n\t\t\thttp.Error(w, \"city is required\", http.StatusBadRequest)\n\t\t\treturn\n\t\t}\n\t\tresp, err := client.Get(baseURL + \"/v1/weather?city=\" + city)\n\t\tif err != nil || resp.StatusCode != http.StatusOK {\n\t\t\thttp.Error(w, \"upstream error\", http.StatusBadGateway)\n\t\t\treturn\n\t\t}\n\t\tdefer resp.Body.Close()\n\t\tvar data struct{ TempC float64 `json:\"temp_c\"` }\n\t\tjson.NewDecoder(resp.Body).Decode(&data)\n\t\tjson.NewEncoder(w).Encode(map[string]float64{\"temp_c\": data.TempC})\n\t}\n}\n```",
+    "assertions": [
+      "Output fakes the upstream with httptest.Server or an http.HandlerFunc, not a hand-rolled interface mock",
+      "The fake asserts on the actual request path and/or query string sent by the client (e.g. /v1/weather?city=...), not just returning a hardcoded response",
+      "Output includes a validation case for a missing city param asserting the handler's actual 400 status",
+      "Output includes a success case asserting 200 status and the decoded temp_c value",
+      "Output includes an upstream-failure case (fake returns non-2xx) asserting the handler's actual failure status",
+      "No test makes a real network call"
+    ]
+  },
+  {
+    "id": "mock-internal-interface",
+    "prompt": "Write tests for this handler, which depends on an internal service interface, not an HTTP client:\n\n```go\ntype UserStore interface {\n\tCreate(ctx context.Context, u User) (User, error)\n}\n\nfunc CreateUser(store UserStore) http.HandlerFunc {\n\treturn func(w http.ResponseWriter, r *http.Request) {\n\t\tvar u User\n\t\tif err := json.NewDecoder(r.Body).Decode(&u); err != nil || u.Email == \"\" {\n\t\t\thttp.Error(w, \"invalid body\", http.StatusBadRequest)\n\t\t\treturn\n\t\t}\n\t\tcreated, err := store.Create(r.Context(), u)\n\t\tif err != nil {\n\t\t\thttp.Error(w, \"could not create user\", http.StatusInternalServerError)\n\t\t\treturn\n\t\t}\n\t\tw.WriteHeader(http.StatusCreated)\n\t\tjson.NewEncoder(w).Encode(created)\n\t}\n}\n```",
+    "assertions": [
+      "Output fakes UserStore with a hand-rolled struct implementing the interface (e.g. a function-field mock), not httptest.Server",
+      "The mock is constructed fresh per test case rather than shared/mutated across cases",
+      "Output includes a validation case for a malformed/missing-email body asserting the actual 400 status",
+      "Output includes a success case asserting 201 status and the response body decodes into the expected User shape",
+      "Output includes a store-error case asserting the handler's actual 500 status",
+      "Output does not reach for httptest.Server anywhere in this test file"
+    ]
+  },
+  {
+    "id": "middleware-rate-limiting",
+    "prompt": "Write tests for this rate-limiting middleware:\n\n```go\nfunc RateLimit(limiter *Limiter) func(http.Handler) http.Handler {\n\treturn func(next http.Handler) http.Handler {\n\t\treturn http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {\n\t\t\tif !limiter.Allow(r.RemoteAddr) {\n\t\t\t\thttp.Error(w, \"rate limit exceeded\", http.StatusTooManyRequests)\n\t\t\t\treturn\n\t\t\t}\n\t\t\tnext.ServeHTTP(w, r)\n\t\t})\n\t}\n}\n```",
+    "assertions": [
+      "Output wraps the middleware around a stub inner http.Handler, not a full app/router",
+      "Output uses httptest.NewRecorder and httptest.NewRequest to drive the middleware",
+      "Output includes a case asserting the limit triggers with status 429 and the inner handler is not called",
+      "Output includes a case with two distinct RemoteAddr values asserting they land in independent buckets (not sharing rate-limit state)",
+      "Output does not test rate limiting through only a single caller key"
+    ]
+  },
+  {
+    "id": "router-aware-url-params",
+    "prompt": "This handler reads a URL path parameter via chi's router:\n\n```go\nfunc GetOrder(store OrderStore) http.HandlerFunc {\n\treturn func(w http.ResponseWriter, r *http.Request) {\n\t\tid := chi.URLParam(r, \"id\")\n\t\torder, err := store.Get(r.Context(), id)\n\t\tif err != nil {\n\t\t\thttp.Error(w, \"not found\", http.StatusNotFound)\n\t\t\treturn\n\t\t}\n\t\tjson.NewEncoder(w).Encode(order)\n\t}\n}\n```\n\nWrite tests for it.",
+    "assertions": [
+      "Output registers the same path pattern used in production routing (e.g. /orders/{id}) on a real chi router instance in the test",
+      "Output does not call the handler function directly bypassing the router",
+      "Output uses ServeHTTP with httptest.NewRecorder/httptest.NewRequest against the router",
+      "Output includes a success case and a not-found case asserting the handler's actual statuses",
+      "Output fakes OrderStore as an interface mock, not an HTTP fake"
+    ]
+  }
+]

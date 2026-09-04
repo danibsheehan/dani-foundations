@@ -1,0 +1,44 @@
+[
+  {
+    "id": "script-setup-mount-props-async",
+    "prompt": "Write a Vitest test for this Vue 3 <script setup> component, which saves on button click after an async validation call:\n\n```vue\n<script setup lang=\"ts\">\nimport { ref } from 'vue';\nimport { validateName } from '../api/nameClient';\nconst props = defineProps<{ title: string }>();\nconst emit = defineEmits<{ save: [string] }>();\nconst name = ref('');\nasync function onSave() {\n  const ok = await validateName(name.value);\n  if (ok) emit('save', name.value);\n}\n</script>\n<template>\n  <h1>{{ title }}</h1>\n  <input v-model=\"name\" />\n  <button @click=\"onSave\">Save</button>\n</template>\n```",
+    "assertions": [
+      "Output uses mount from @vue/test-utils and passes title via props",
+      "Output mocks the api client module (e.g. vi.mock('../api/nameClient')) rather than calling a real backend",
+      "Output calls flushPromises() after triggering the button click before asserting on emitted events",
+      "Output asserts wrapper.emitted('save') contains the expected name value",
+      "Output includes a case where validation fails and 'save' is not emitted"
+    ]
+  },
+  {
+    "id": "define-emits-model-value",
+    "prompt": "Write a test for this component using defineEmits with v-model:\n\n```vue\n<script setup lang=\"ts\">\nconst props = defineProps<{ modelValue: string }>();\nconst emit = defineEmits<{ 'update:modelValue': [string] }>();\n</script>\n<template>\n  <input :value=\"modelValue\" @input=\"emit('update:modelValue', ($event.target as HTMLInputElement).value)\" />\n</template>\n```",
+    "assertions": [
+      "Output mounts the component with an initial modelValue prop",
+      "Output uses wrapper.find('input').setValue(...) to trigger input",
+      "Output asserts wrapper.emitted('update:modelValue')?.[0] equals the expected array with the new value",
+      "Output does not assert on internal component state instead of the emitted event"
+    ]
+  },
+  {
+    "id": "composable-with-inject",
+    "prompt": "Write tests for this composable, which relies on an injected key:\n\n```typescript\nimport { inject } from 'vue';\nimport type { InjectionKey } from 'vue';\nexport const ApiKey: InjectionKey<{ getCount: () => number }> = Symbol('api');\n\nexport function useCount() {\n  const api = inject(ApiKey);\n  if (!api) throw new Error('ApiKey not provided');\n  return { count: api.getCount() };\n}\n```",
+    "assertions": [
+      "Output mounts a small test parent component that provides ApiKey rather than calling useCount() bare at the top level",
+      "Output asserts the composable returns the value from the provided mock api's getCount",
+      "Output includes a case asserting useCount throws (or the wrapping component errors) when ApiKey isn't provided",
+      "Output does not attempt to call inject() outside of a component/setup context"
+    ]
+  },
+  {
+    "id": "pinia-store-fresh-instance",
+    "prompt": "Write tests for this Pinia store:\n\n```typescript\nimport { defineStore } from 'pinia';\nexport const useCartStore = defineStore('cart', {\n  state: () => ({ items: [] as string[] }),\n  actions: {\n    add(item: string) { this.items.push(item); },\n    clear() { this.items = []; },\n  },\n});\n```",
+    "assertions": [
+      "Output calls setActivePinia(createPinia()) in a beforeEach, not once globally at the top of the file",
+      "Output uses useCartStore() fresh in each test rather than reusing a shared instance across tests",
+      "Output includes a test asserting add() pushes the item into items",
+      "Output includes a test asserting clear() empties items",
+      "Output does not carry state over between test cases (e.g. an item added in one test leaking into another)"
+    ]
+  }
+]
