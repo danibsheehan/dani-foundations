@@ -21,12 +21,13 @@ All output is written in Markdown (`.md`) unless writing inline source annotatio
 
 Determine which doc type(s) are needed:
 
-| Request                                                     | Doc Type                               |
-| ----------------------------------------------------------- | -------------------------------------- |
-| "Write a README", "document this repo"                      | → README                               |
-| "Document this function/class/interface", "add JSDoc/GoDoc" | → API Docs                             |
-| "Add comments", "explain what this code does inline"        | → Inline Comments                      |
-| Mixed / ambiguous                                           | → Ask, or default to README + API Docs |
+| Request                                                                    | Doc Type                               |
+| --------------------------------------------------------------------------- | --------------------------------------- |
+| "Write a README", "document this repo"                                    | → README                               |
+| "Document this function/class/interface", "add JSDoc/GoDoc"               | → API Docs                             |
+| "Add comments", "explain what this code does inline"                      | → Inline Comments                      |
+| "Is the README accurate", "check docs for drift", "audit documentation"   | → Drift Check                          |
+| Mixed / ambiguous                                                          | → Ask, or default to README + API Docs |
 
 ---
 
@@ -61,6 +62,7 @@ Read the appropriate reference file for the doc type before writing:
 - **API Docs (JS/TS)** → read `references/jsdoc.md`
 - **API Docs (Go)** → read `references/godoc.md`
 - **Inline Comments** → read `references/inline-comments.md`
+- **Drift Check** → read `references/drift-check.md`
 
 Then produce the output following those guidelines exactly.
 
