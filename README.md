@@ -1,12 +1,23 @@
 # dani-foundations
 
-A Claude Code plugin marketplace holding process/docs skills shared across personal project
-repos, plus a repo-scaffold template — so a skill fix or improvement lands once instead of
-being hand-copied (and hand-drifted) into every repo.
+A shared toolbox of AI coding-assistant instructions ("skills") for [Claude
+Code](https://claude.com/claude-code), used across several of Danielle's personal project
+repos.
+
+**In plain English:** each of Danielle's projects uses Claude Code as a coding assistant, and
+many of them need the same guidance — "write a test this way," "fill out a PR description
+like this," "check accessibility like that." Rather than pasting the same instructions into
+every project and letting them quietly drift apart over time, this repo holds the shared
+instructions once. Every project subscribes to it; a fix or improvement here reaches all of
+them at once.
+
+_Everything past this point gets into the technical specifics — what's in the toolbox, and
+how a project wires it in._
 
 ## What's here
 
-- **`foundations` plugin** (`plugins/foundations/`) — 18 shared skills:
+- **`foundations` plugin** (`plugins/foundations/`) — 18 shared skills, each a short
+  instruction file Claude Code reads automatically when it's relevant:
   - `doc-writer` — README / API doc (JSDoc/GoDoc) / inline comment generation
   - `pr-ready` — pre-PR CI-parity checklist and PR description guidance
   - `definition-of-done` — post-edit format/lint/test/build verification
