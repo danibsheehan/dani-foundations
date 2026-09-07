@@ -58,8 +58,8 @@ not stopping to ask when the direction is reasonably clear.
 ## Handoff
 
 Once the chunk plan exists, implement chunk by chunk. As each chunk's goal is met, **the
-pr-stack-ship skill** takes over: branching, committing, and opening that chunk's PR before
-work continues on the next chunk.
+pr-stack-ship skill** takes over: branching (named per **branch-naming**), committing, and
+opening that chunk's PR before work continues on the next chunk.
 
 ## Anti-patterns
 
