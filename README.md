@@ -16,7 +16,7 @@ how a project wires it in._
 
 ## What's here
 
-- **`foundations` plugin** (`plugins/foundations/`) — 19 shared skills, each a short
+- **`foundations` plugin** (`plugins/foundations/`) — 21 shared skills, each a short
   instruction file Claude Code reads automatically when it's relevant:
   - `doc-writer` — README / API doc (JSDoc/GoDoc) / inline comment generation, plus a
     self-directed drift check (docs vs. actual code) reference
@@ -25,6 +25,10 @@ how a project wires it in._
   - `dependabot-triage` — reviews and classifies open Dependabot PRs by risk
   - `coverage-gap-diagnosis` — names specific untested behavior, not just a bare percentage
   - `pr-summary-draft` — drafts a why-first PR Summary from the actual diff
+  - `pr-chunk-plan` — breaks a feature-shaped or multi-file task into an ordered sequence of
+    small, independently reviewable chunks before implementation starts
+  - `pr-stack-ship` — ships a chunk-planned task as a stack of small branches/PRs, one per
+    chunk, and maintains the stack as earlier PRs merge
   - `test-generator` — framework-agnostic unit test structure, coverage, and quality rules
   - `accessibility-a11y` — framework-agnostic a11y checklist (keyboard, ARIA, motion, contrast)
   - `bundle-performance` — bundle-size measurement discipline and runtime perf checks

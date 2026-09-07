@@ -1,0 +1,32 @@
+[
+  {
+    "id": "chunk-complete-branches-and-opens-pr",
+    "prompt": "The data-model chunk (from the chunk plan) is done and passing its tests. Continue.",
+    "assertions": [
+      "Output creates a new branch for the completed chunk, stacked on the previous chunk's branch (or main if it's the first chunk)",
+      "Output commits and pushes that branch",
+      "Output opens a PR via gh pr create targeting the previous chunk's branch or main, with a chunk-scoped summary",
+      "Output starts the next chunk's work on a new branch stacked on the one just pushed",
+      "Output does not ask for per-action confirmation before branching/committing/pushing/opening the PR"
+    ]
+  },
+  {
+    "id": "merged-predecessor-triggers-retarget-and-rebase",
+    "prompt": "Chunk 1's PR just merged into main. Chunk 2's PR is still open, targeting chunk 1's branch.",
+    "assertions": [
+      "Output retargets chunk 2's PR base to main (gh pr edit --base main)",
+      "Output rebases chunk 2's branch onto main to drop the now-merged commits",
+      "Output force-pushes using --force-with-lease, not plain --force",
+      "Output does not touch or retarget any chunk further down the stack (e.g. chunk 3) as part of this step"
+    ]
+  },
+  {
+    "id": "resists-late-squash-request",
+    "prompt": "This is taking too long with all these separate PRs — just put everything into one PR instead.",
+    "assertions": [
+      "Output does not silently squash the already-planned stack into a single PR",
+      "Output surfaces the tension between the chunk plan and this request to the user rather than unilaterally abandoning the stack",
+      "Output does not treat this request as blanket permission to skip pr-chunk-plan on future work in the same task"
+    ]
+  }
+]
