@@ -1,0 +1,30 @@
+[
+  {
+    "id": "feature-shaped-task-gets-chunked",
+    "prompt": "Add avatar upload for users: needs a new DB column, an upload API endpoint, and UI for picking/previewing the image.",
+    "assertions": [
+      "Output produces an ordered chunk plan before writing implementation code",
+      "Chunks are independently reviewable (e.g. data model, API endpoint, UI are separate chunks) rather than one bundled change",
+      "Chunk order respects dependencies (data model before the endpoint that uses it, endpoint before the UI that calls it)",
+      "The plan is recorded via the task-tracking/todo tool, not just stated in passing"
+    ]
+  },
+  {
+    "id": "small-fix-skips-planning",
+    "prompt": "Fix a typo in the button label in Footer.tsx.",
+    "assertions": [
+      "Output does not produce a multi-chunk plan",
+      "Output proceeds directly with the single small fix",
+      "Output does not invoke chunk-planning machinery (todo list of chunks, stacked branches) for this change"
+    ]
+  },
+  {
+    "id": "mechanical-multi-file-change-skips-planning",
+    "prompt": "Rename the `fetchUser` function to `getUser` everywhere it's used across the codebase (it appears in about 12 files).",
+    "assertions": [
+      "Output does not chunk this into multiple PR-sized pieces despite touching 3+ files",
+      "Output recognizes this as one mechanical, independently reviewable change rather than a feature-shaped task",
+      "Output does not create a chunk plan or stacked branches for this change"
+    ]
+  }
+]
