@@ -30,6 +30,12 @@ Run this repo's stack-docs checker if it has one. Each error line should name th
 doc/value mismatch. If it's already green, read the source files directly instead — you may
 have been asked to pre-emptively sync docs after a manual bump.
 
+If this repo has no stack-docs checker of its own, run the bundled fallback for Node/Go
+runtime-version claims: `python3 <skill-dir>/scripts/check_stack_docs.py` (checks
+`.nvmrc`/`package.json` `engines.node` and `go.mod`'s `go` directive against
+README.md/AGENTS.md). It only covers runtime versions — framework/build-tool version claims
+still need to be read and compared by hand.
+
 ### 2. Read the source of truth
 
 - The package manifest (`package.json`, `go.mod`, etc.) for framework/language/build-tool
@@ -60,5 +66,6 @@ names the file and the exact expected value.
 ## Reference
 
 - This repo's stack-docs checker, if any (e.g. `check_stack_docs.py`), is the source of the
-  exact rules each doc must match.
+  exact rules each doc must match. If it has none, this skill's own bundled
+  `scripts/check_stack_docs.py` is a Node/Go-runtime-version-only fallback.
 - Run as part of this repo's PR-readiness flow — see the **pr-ready** skill.
