@@ -16,7 +16,7 @@ how a project wires it in._
 
 ## What's here
 
-- **`foundations` plugin** (`plugins/foundations/`) — 21 shared skills, each a short
+- **`foundations` plugin** (`plugins/foundations/`) — 22 shared skills, each a short
   instruction file Claude Code reads automatically when it's relevant:
   - `doc-writer` — README / API doc (JSDoc/GoDoc) / inline comment generation, plus a
     self-directed drift check (docs vs. actual code) reference
@@ -29,6 +29,8 @@ how a project wires it in._
     small, independently reviewable chunks before implementation starts
   - `pr-stack-ship` — ships a chunk-planned task as a stack of small branches/PRs, one per
     chunk, and maintains the stack as earlier PRs merge
+  - `branch-naming` — states the `<type>/<slug>` Conventional-Commits-style branch naming
+    convention used across these repos
   - `test-generator` — framework-agnostic unit test structure, coverage, and quality rules
   - `accessibility-a11y` — framework-agnostic a11y checklist (keyboard, ARIA, motion, contrast)
   - `bundle-performance` — bundle-size measurement discipline and runtime perf checks

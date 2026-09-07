@@ -1,0 +1,30 @@
+[
+  {
+    "id": "feature-branch-type",
+    "prompt": "I'm about to start work adding a new dark-mode toggle to the settings page. What should I name the branch?",
+    "assertions": [
+      "Output proposes a branch name in the form <type>/<slug>",
+      "Output uses `feat` as the type",
+      "Slug is lowercase and hyphen-separated",
+      "Slug does not include a ticket or issue number"
+    ]
+  },
+  {
+    "id": "test-only-branch-type",
+    "prompt": "I only need to add missing unit tests for the existing formatDate utility, no behavior changes. Name the branch.",
+    "assertions": [
+      "Output uses `test` as the type, not `chore` or `fix`",
+      "Output follows the <type>/<slug> format",
+      "Slug is lowercase and hyphen-separated"
+    ]
+  },
+  {
+    "id": "refactor-vs-fix-branch-type",
+    "prompt": "I'm restructuring the auth middleware into smaller functions with no behavior change, discovered while investigating a bug. Name the branch.",
+    "assertions": [
+      "Output uses `refactor` as the type, not `fix`, since there is no behavior change",
+      "Output follows the <type>/<slug> format",
+      "Slug is lowercase and hyphen-separated"
+    ]
+  }
+]

@@ -31,7 +31,7 @@ line-count threshold. Completeness is about the chunk's goal, not its size.
 ## Shipping a completed chunk
 
 1. Create a branch stacked on the previous chunk's branch (the first chunk branches from the
-   repo's main branch).
+   repo's main branch), named per the **branch-naming** skill's `<type>/<slug>` convention.
 2. Commit the chunk's changes on that branch.
 3. Push the branch.
 4. Open a PR: `gh pr create --base <previous-chunk-branch-or-main>` with a chunk-scoped
