@@ -1,6 +1,13 @@
 ---
 name: test-generator
-description: Generates thorough, idiomatic unit tests for JavaScript/TypeScript projects, framework-agnostic. Use this skill whenever the user wants to write tests, generate test files, add test coverage, test a function/module/component, or asks anything like "write tests for this", "generate specs", "add unit tests", "how do I test this", or "improve my test coverage". For framework-specific patterns (React, Vue, Angular, etc.), also check this repo's own local testing skill or AGENTS.md.
+description: >-
+  Generates thorough, idiomatic unit tests for JavaScript/TypeScript projects,
+  framework-agnostic. Use this skill whenever the user wants to write tests,
+  generate test files, add test coverage, test a function/module/component,
+  or asks anything like "write tests for this", "generate specs", "add unit
+  tests", "how do I test this", or "improve my test coverage". For
+  framework-specific patterns (React, Vue, Angular, etc.), also check this
+  repo's own local testing skill or AGENTS.md.
 ---
 
 # Test Generator
