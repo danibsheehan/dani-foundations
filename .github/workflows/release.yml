@@ -19,6 +19,10 @@ jobs:
         with:
           fetch-depth: 0
           persist-credentials: true
+          # RELEASE_TOKEN is a PAT belonging to an admin account. The default
+          # GITHUB_TOKEN runs as github-actions[bot], which the main branch
+          # ruleset's pull_request rule doesn't exempt (only the repo-admin
+          # role is bypassed), so it can't push the release commit/tag below.
           token: ${{ secrets.RELEASE_TOKEN }}
 
       - name: Setup Node.js
@@ -31,5 +35,6 @@ jobs:
 
       - name: Release
         env:
+          # See RELEASE_TOKEN note above.
           GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
         run: npx semantic-release
