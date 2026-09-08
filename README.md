@@ -105,12 +105,23 @@ local `.claude/skills/*` — no naming conflicts.
 
 ## Versioning
 
-Bump `plugins/foundations/.claude-plugin/plugin.json`'s `version` on any change consumers
-should pick up — Claude Code's plugin install is a per-repo snapshot (pinned to the commit
-present at install time), not a live sync, so a version bump alone doesn't push anything;
-each consuming repo has to explicitly re-install/update via `/plugins` to pick up a new
-version. Every version bump gets a matching git tag (`vX.Y.Z`, e.g. `v1.8.0`) at the commit
-that makes the bump, so tag history exactly mirrors `plugin.json` history — the easiest way
-to answer "what changed between the version I have and HEAD." Tags aren't consulted by the
-plugin install/update mechanism itself (unlike `dani-actions`, where a git tag ref is exactly
-what a consumer's `workflow_call` pins to); they're for human-readable release history only.
+`plugins/foundations/.claude-plugin/plugin.json`'s `version` is bumped and tagged
+automatically by CI (`.github/workflows/release.yml`, via
+[semantic-release](https://semantic-release.gitbook.io/)) on every merge to `main` that
+contains a releasable change — don't hand-edit the `version` field. Claude Code's plugin
+install is a per-repo snapshot (pinned to the commit present at install time), not a live
+sync, so a version bump alone doesn't push anything; each consuming repo has to explicitly
+re-install/update via `/plugins` to pick up a new version. Because updates are opt-in per
+consumer, **always pin to a specific tag/version rather than tracking `main`.** Every version
+bump gets a matching git tag (`vX.Y.Z`, e.g. `v1.8.0`) at the commit that makes the bump, so
+tag history exactly mirrors `plugin.json` history — the easiest way to answer "what changed
+between the version I have and HEAD." Tags aren't consulted by the plugin install/update
+mechanism itself (unlike `dani-actions`, where a git tag ref is exactly what a consumer's
+`workflow_call` pins to); they're for human-readable release history only.
+
+PR titles must follow [Conventional Commits](https://www.conventionalcommits.org/) (enforced
+by `.github/workflows/pr-title-lint.yml`), since PRs are squash-merged and the PR title is
+what CI analyzes to decide the version bump: `feat: ...` → minor, `fix: ...` → patch, and a
+`!` after the type (e.g. `feat!: ...`) or a `BREAKING CHANGE:` footer in the PR body → major.
+Since other projects consume this plugin, mark breaking changes deliberately — an unmarked
+breaking change ships as a minor/patch bump and can silently break a consumer that updates.
