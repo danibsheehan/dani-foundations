@@ -41,6 +41,9 @@ narrative tour.
 
 ## Constraints — do not
 
+- **Commit or push directly to `main`.** Always branch first, following
+  `foundations:branch-naming`'s `<type>/<slug>` convention, then open a PR — even for small
+  or config-only changes.
 <!-- Things an agent should never do in this repo: forbidden imports/APIs, assumptions that
      don't hold (e.g. "don't assume hosted at /"), destructive actions needing explicit ask. -->
 
@@ -54,4 +57,8 @@ narrative tour.
 Skills: `.claude/skills` is this repo's canonical skills directory (`.cursor/skills` symlinks
 to it for legacy Cursor compatibility). This repo also installs the shared `foundations`
 plugin from the `dani-foundations` marketplace for skills common across personal projects —
-see `CLAUDE.md`.
+see `CLAUDE.md`. Two apply to how any task here gets branched and scoped:
+`foundations:branch-naming` (branch names follow `<type>/<slug>`; enforced automatically by
+a `PreToolUse` hook shipped with the plugin) and `foundations:pr-chunk-plan` (break a task
+touching 3+ files or bundling multiple concerns into small reviewable chunks before
+implementation starts).

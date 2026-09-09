@@ -69,6 +69,11 @@ how a project wires it in._
   bootstrapping a new repo and fill in the repo-specific prose; not auto-synced into
   existing repos.
 
+- **`plugins/foundations/hooks/`** — a `PreToolUse` hook that validates branch names against
+  the `branch-naming` skill's `<type>/<slug>` convention before `git checkout -b` / `git
+  switch -c` runs, blocking non-conforming names with an explanation. Ships automatically
+  with the plugin — no per-repo setup required.
+
 ## Standards established here (beyond the skills themselves)
 
 - **Required CI check naming**: single-stack repo → one required check named `quality`
