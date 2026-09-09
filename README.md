@@ -14,16 +14,35 @@ them at once.
 _Everything past this point gets into the technical specifics — what's in the toolbox, and
 how a project wires it in._
 
+## Standards established here (beyond the skills themselves)
+
+- **Required CI check naming**: single-stack repo → one required check named `quality`
+  (or `quality` + `unit-tests` if build/lint and tests are split into separate jobs);
+  multi-stack repo → `<Stack> (...)` per stack, plus an optional dedicated lint check. This
+  is the target convention `dependabot-triage`/`pr-ready` assume — not a guarantee every
+  consuming repo has already renamed its jobs to match.
+- **Coverage threshold policy**: a ratchet, not a fixed target — the threshold in CI config
+  should sit at roughly the repo's current actual coverage and only ever go up, never down
+  to land a change easier. Different repos legitimately have different numbers; the policy
+  is what's shared, not the number.
+- **Dependabot grouping**: see `templates/dependabot.yml.template` above — already
+  identical in practice across all 4 repos before this was ever written down.
+- **Branch naming**: `<type>/<slug>`, Conventional-Commits-style type prefixes — see the
+  `branch-naming` skill. Enforced automatically by the `PreToolUse` hook on `git checkout -b`/
+  `git switch -c`, not just a documented convention.
+- **No real network calls in unit tests**: mock the client/HTTP layer instead of calling a
+  real external/upstream service. Stated independently in `api-hardening`,
+  `caching-and-upstream-perf`, `react-vitest-testing`, and `go-http-testing` rather than
+  centralized — a convention these skills all assume.
+
 ## What's here
 
 - **`foundations` plugin** (`plugins/foundations/`) — 22 shared skills, each a short
-  instruction file Claude Code reads automatically when it's relevant:
-  - `doc-writer` — README / API doc (JSDoc/GoDoc) / inline comment generation, plus a
-    self-directed drift check (docs vs. actual code) reference
+  instruction file Claude Code reads automatically when it's relevant. Grouped into 5
+  areas: PR/git workflow, testing, docs, quality & hardening, and deploy.
+
+  **PR/git workflow**
   - `pr-ready` — pre-PR CI-parity checklist and PR description guidance
-  - `definition-of-done` — post-edit format/lint/test/build verification
-  - `dependabot-triage` — reviews and classifies open Dependabot PRs by risk
-  - `coverage-gap-diagnosis` — names specific untested behavior, not just a bare percentage
   - `pr-summary-draft` — drafts a why-first PR Summary from the actual diff
   - `pr-chunk-plan` — breaks a feature-shaped or multi-file task into an ordered sequence of
     small, independently reviewable chunks before implementation starts
@@ -31,18 +50,13 @@ how a project wires it in._
     chunk, and maintains the stack as earlier PRs merge
   - `branch-naming` — states the `<type>/<slug>` Conventional-Commits-style branch naming
     convention used across these repos
-  - `test-generator` — framework-agnostic unit test structure, coverage, and quality rules
-  - `accessibility-a11y` — framework-agnostic a11y checklist (keyboard, ARIA, motion, contrast)
-  - `bundle-performance` — bundle-size measurement discipline and runtime perf checks
-  - `api-hardening` — backend/API hardening principles (validation, SSRF-safe upstream calls,
-    generic client errors, CORS/rate-limit defaults), independent of backend stack
-  - `github-pages-deploy` — GitHub Pages project-site base-path handling and workflow shape
+  - `dependabot-triage` — reviews and classifies open Dependabot PRs by risk
   - `bugbot-fix-verify` — verifies an automated review-bot finding against ground truth before
     fixing it, and re-verifies the fix doesn't open a new gap
-  - `caching-and-upstream-perf` — caching/rate-limiting principles for wrapping a slow or
-    rate-limited third-party API, independent of backend stack
-  - `doc-sync-patch` — patches doc version claims to match the real manifest once a stack-docs
-    drift check flags them
+
+  **Testing**
+  - `test-generator` — framework-agnostic unit test structure, coverage, and quality rules
+  - `coverage-gap-diagnosis` — names specific untested behavior, not just a bare percentage
   - `react-vitest-testing` — React + Vitest + Testing Library mechanics (mock the API client,
     `renderHook` loading-race gotcha, roles/loading/error/empty checklist)
   - `vue-vitest-testing` — Vue 3 + Vitest mechanics (`@vue/test-utils` mount, `defineEmits`,
@@ -55,6 +69,24 @@ how a project wires it in._
   - `go-testing` — cross-cutting Go testing idioms independent of app shape (concurrent
     idempotency/coalescing convergence, retry/backoff via an injectable seam, config/env-loader
     defaults, table-driven predicate/classifier tests)
+
+  **Docs**
+  - `doc-writer` — README / API doc (JSDoc/GoDoc) / inline comment generation, plus a
+    self-directed drift check (docs vs. actual code) reference
+  - `doc-sync-patch` — patches doc version claims to match the real manifest once a stack-docs
+    drift check flags them
+
+  **Quality & hardening**
+  - `definition-of-done` — post-edit format/lint/test/build verification
+  - `accessibility-a11y` — framework-agnostic a11y checklist (keyboard, ARIA, motion, contrast)
+  - `bundle-performance` — bundle-size measurement discipline and runtime perf checks
+  - `api-hardening` — backend/API hardening principles (validation, SSRF-safe upstream calls,
+    generic client errors, CORS/rate-limit defaults), independent of backend stack
+  - `caching-and-upstream-perf` — caching/rate-limiting principles for wrapping a slow or
+    rate-limited third-party API, independent of backend stack
+
+  **Deploy**
+  - `github-pages-deploy` — GitHub Pages project-site base-path handling and workflow shape
 
   These skills describe the generic shape of each task and defer to each consuming repo's
   own `AGENTS.md` / local skills for exact commands and framework-specific patterns (React,
@@ -73,20 +105,6 @@ how a project wires it in._
   the `branch-naming` skill's `<type>/<slug>` convention before `git checkout -b` / `git
   switch -c` runs, blocking non-conforming names with an explanation. Ships automatically
   with the plugin — no per-repo setup required.
-
-## Standards established here (beyond the skills themselves)
-
-- **Required CI check naming**: single-stack repo → one required check named `quality`
-  (or `quality` + `unit-tests` if build/lint and tests are split into separate jobs);
-  multi-stack repo → `<Stack> (...)` per stack, plus an optional dedicated lint check. This
-  is the target convention `dependabot-triage`/`pr-ready` assume — not a guarantee every
-  consuming repo has already renamed its jobs to match.
-- **Coverage threshold policy**: a ratchet, not a fixed target — the threshold in CI config
-  should sit at roughly the repo's current actual coverage and only ever go up, never down
-  to land a change easier. Different repos legitimately have different numbers; the policy
-  is what's shared, not the number.
-- **Dependabot grouping**: see `templates/dependabot.yml.template` above — already
-  identical in practice across all 4 repos before this was ever written down.
 
 ## Using this marketplace in a repo
 
