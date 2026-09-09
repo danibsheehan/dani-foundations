@@ -27,6 +27,13 @@ how a project wires it in._
   is what's shared, not the number.
 - **Dependabot grouping**: see `templates/dependabot.yml.template` above — already
   identical in practice across all 4 repos before this was ever written down.
+- **Branch naming**: `<type>/<slug>`, Conventional-Commits-style type prefixes — see the
+  `branch-naming` skill. Enforced automatically by the `PreToolUse` hook on `git checkout -b`/
+  `git switch -c`, not just a documented convention.
+- **No real network calls in unit tests**: mock the client/HTTP layer instead of calling a
+  real external/upstream service. Stated independently in `api-hardening`,
+  `caching-and-upstream-perf`, `react-vitest-testing`, and `go-http-testing` rather than
+  centralized — a convention these skills all assume.
 
 ## What's here
 
