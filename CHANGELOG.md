@@ -1,3 +1,10 @@
+# [1.15.0](https://github.com/danibsheehan/dani-foundations/compare/v1.14.0...v1.15.0) (2026-09-09)
+
+
+### Features
+
+* **hooks:** enforce branch-naming convention via PreToolUse hook ([#20](https://github.com/danibsheehan/dani-foundations/issues/20)) ([bf82d1b](https://github.com/danibsheehan/dani-foundations/commit/bf82d1b0eb9c1b7e13f93ced22cb69e62e5f7071))
+
 # [1.14.0](https://github.com/danibsheehan/dani-foundations/compare/v1.13.0...v1.14.0) (2026-09-08)
 
 
