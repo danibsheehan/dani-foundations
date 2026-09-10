@@ -37,7 +37,7 @@ how a project wires it in._
 
 ## What's here
 
-- **`foundations` plugin** (`plugins/foundations/`) — 22 shared skills, each a short
+- **`foundations` plugin** (`plugins/foundations/`) — 23 shared skills, each a short
   instruction file Claude Code reads automatically when it's relevant. Grouped into 5
   areas: PR/git workflow, testing, docs, quality & hardening, and deploy.
 
@@ -82,6 +82,9 @@ how a project wires it in._
   - `bundle-performance` — bundle-size measurement discipline and runtime perf checks
   - `api-hardening` — backend/API hardening principles (validation, SSRF-safe upstream calls,
     generic client errors, CORS/rate-limit defaults), independent of backend stack
+  - `injection-prevention` — injection-class vulnerability prevention (XSS/HTML injection,
+    SQL/NoSQL injection, command injection, template injection, path traversal, hardcoded
+    secrets), independent of stack
   - `caching-and-upstream-perf` — caching/rate-limiting principles for wrapping a slow or
     rate-limited third-party API, independent of backend stack
 
