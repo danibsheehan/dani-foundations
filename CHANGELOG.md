@@ -1,3 +1,10 @@
+# [1.17.0](https://github.com/danibsheehan/dani-foundations/compare/v1.16.0...v1.17.0) (2026-09-10)
+
+
+### Features
+
+* add authz-object-level-access skill ([#23](https://github.com/danibsheehan/dani-foundations/issues/23)) ([7f96abf](https://github.com/danibsheehan/dani-foundations/commit/7f96abf132772cb34a3a3bb98e3ccce59f95a27f))
+
 # [1.16.0](https://github.com/danibsheehan/dani-foundations/compare/v1.15.0...v1.16.0) (2026-09-10)
 
 
