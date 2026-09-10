@@ -1,3 +1,10 @@
+# [1.16.0](https://github.com/danibsheehan/dani-foundations/compare/v1.15.0...v1.16.0) (2026-09-10)
+
+
+### Features
+
+* add injection-prevention skill ([#22](https://github.com/danibsheehan/dani-foundations/issues/22)) ([385e1cc](https://github.com/danibsheehan/dani-foundations/commit/385e1ccd3a52dbece07d7bbee91daa5c94251152))
+
 # [1.15.0](https://github.com/danibsheehan/dani-foundations/compare/v1.14.0...v1.15.0) (2026-09-09)
 
 
