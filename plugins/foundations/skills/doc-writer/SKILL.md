@@ -27,6 +27,7 @@ Determine which doc type(s) are needed:
 | "Document this function/class/interface", "add JSDoc/GoDoc"               | → API Docs                             |
 | "Add comments", "explain what this code does inline"                      | → Inline Comments                      |
 | "Is the README accurate", "check docs for drift", "audit documentation"   | → Drift Check                          |
+| "Does this repo need a docs/ folder", "where should X doc live"           | → docs/ Folder Scope                   |
 | Mixed / ambiguous                                                          | → Ask, or default to README + API Docs |
 
 ---
@@ -63,6 +64,7 @@ Read the appropriate reference file for the doc type before writing:
 - **API Docs (Go)** → read `references/godoc.md`
 - **Inline Comments** → read `references/inline-comments.md`
 - **Drift Check** → read `references/drift-check.md`
+- **docs/ Folder Scope** → read `references/docs-folder.md`
 
 Then produce the output following those guidelines exactly.
 
