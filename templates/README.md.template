@@ -1,0 +1,44 @@
+# Project Name
+
+> <!-- One-line tagline — what it does and who it's for -->
+
+## Contents
+
+<!-- Linked table of contents to every other section below. -->
+
+## Start here
+
+<!-- The fastest path for a new reader: what to read/run first, one or two links/commands. -->
+
+## Overview
+
+<!-- 2-4 sentences: what problem this solves, what it does. -->
+
+## Prerequisites
+
+<!-- Runtime/tool versions and accounts needed before install — Node/Go version, API keys,
+     etc. -->
+
+## Install, Run
+
+```bash
+<!-- exact install + dev-server/build commands -->
+```
+
+## Configuration
+
+<!-- Table of env vars/options: | Option | Type | Default | Description | -->
+
+<!--
+Recommended pool — add only when its inclusion rule applies (see
+foundations:doc-writer's references/readme.md for the full rules), in whatever
+order reads best relative to the required core above:
+
+## Features            — distinct end-user capabilities worth listing separately from Overview
+## CI                   — CI does more than the shared default verify workflow
+## Automation           — a scheduled/agent-driven routine exists beyond the human PR flow
+## Deploy               — deploy is non-default or has secrets/rollback nuance
+## Contributing         — outside contributions are accepted, or the PR flow differs from AGENTS.md
+## License              — a LICENSE file exists at the repo root
+## Cursor — legacy compatibility only   — .cursor/ still exists as a legacy symlink
+-->
