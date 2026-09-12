@@ -22,6 +22,26 @@ For broader, self-directed drift detection with no checker required (documented
 routes/commands/exports, config tables, project layout vs. what the code actually has), see
 **`foundations:doc-writer`**'s Drift Check reference instead.
 
+## When a repo needs its own local specialization
+
+A repo's own checker is the only thing that knows its exact patch locations. Whether that's
+worth writing down ahead of time in a local `.claude/skills/doc-sync-patch/SKILL.md` (as
+opposed to just re-deriving it from the checker's error output each time this skill runs)
+depends on whether that output is already self-describing:
+
+- **Skip a local specialization** when each error line already names the exact file, section,
+  and expected value unambiguously — e.g. `musing`'s `check_stack_docs.py` prints lines like
+  `README.md Stack table: missing React major ('React 19')`, which is enough on its own to
+  patch correctly with no extra reference needed.
+- **Write one** when the checker's errors are positional or otherwise ambiguous about *where*
+  to patch — e.g. `caught-looking`'s checker just says a README badge or Tech-stack row is
+  wrong, without saying which of several badges/rows or in what exact wording, so its local
+  `doc-sync-patch` specialization carries a precomputed table of the exact locations and
+  wording this skill's generic method can't derive from the error alone.
+
+Don't write a local specialization by default just because a repo has its own checker — only
+when the errors themselves leave real ambiguity a table would resolve.
+
 ## Order of work
 
 ### 1. Read the current failure (or the source of truth directly)
