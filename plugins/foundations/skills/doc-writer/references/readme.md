@@ -1,62 +1,66 @@
 # README Writing Guide
 
-## Structure (in order)
+This guide covers **application repos** (a product someone runs, not a published library) —
+the shape used across these personal projects. For an actual published package meant to be
+`npm install`ed or `go get`ed by others, a classic Installation/Quick-Start/API-Reference
+library README is still the right shape; use judgment if this repo is that kind of project
+instead.
+
+## Structure
+
+A **required core**, always present and in this order, plus a **recommended pool** included
+only when the inclusion rule for that section actually applies. Don't include a pool section
+just because another repo has it — check the rule.
+
+### Required core (fixed order)
 
 ```markdown
 # Project Name
 
 > One-line tagline — what it does and who it's for
 
+## Contents
+
+<!-- Linked table of contents to every other section in this README. -->
+
+## Start here
+
+<!-- The fastest path for a new reader: what to read/run first, one or two links/commands. -->
+
 ## Overview
 
 2–4 sentences. What problem does this solve? What does it do?
 
-## Features
+## Prerequisites
 
-- Bullet list of key capabilities (5–8 max)
+<!-- Runtime/tool versions and accounts needed before install — Node/Go version, API keys,
+     etc. -->
 
-## Installation
+## Install, Run
 
 \`\`\`bash
-npm install my-package # JS/TS
-
-# or
-
-go get github.com/org/repo # Go
+<!-- exact install + dev-server/build commands -->
 \`\`\`
 
-## Quick Start
+## Configuration
 
-Minimal working example. Copy-pasteable. No setup steps buried in prose.
-
-\`\`\`ts
-// JS/TS example
-import { thing } from 'my-package'
-thing.doSomething()
-\`\`\`
-
-\`\`\`go
-// Go example
-import "github.com/org/repo"
-repo.DoSomething()
-\`\`\`
-
-## API Reference
-
-Link to generated docs or summarize key exports here.
-
-## Configuration (if applicable)
-
-Table of options: | Option | Type | Default | Description |
-
-## Contributing (optional)
-
-Brief guide or link to CONTRIBUTING.md
-
-## License
-
-MIT / Apache 2.0 / etc.
+<!-- Table of env vars/options: | Option | Type | Default | Description | -->
 ```
+
+### Recommended pool (include only when the rule applies)
+
+| Section | Include when… |
+| --- | --- |
+| `## Features` | The app has distinct end-user-facing capabilities worth listing separately from Overview — skip if Overview already covers it in 2–4 sentences. |
+| `## CI` (or a Test/CI-parity pointer) | CI does more than the shared default verify workflow — e.g. extra jobs, a non-standard gate. |
+| `## Automation` | A scheduled or agent-driven routine exists beyond the standard human-initiated PR flow. |
+| `## Deploy` / `## Deployment` | Deploy is non-default (not just a static GitHub Pages build via the shared workflow) or has secrets/rollback nuance worth documenting. |
+| `## Contributing` | The repo accepts outside contributions, or the PR flow differs from what `AGENTS.md` already states for agents. |
+| `## License` | A `LICENSE` file exists at the repo root. |
+| `## Cursor — legacy compatibility only` | `.cursor/` still exists as a symlink for legacy Cursor compatibility in this repo — drop this section once that symlink is removed. |
+
+Order the included pool sections wherever they read best relative to the required core —
+there's no fixed position for them, only a fixed position for the required core itself.
 
 ## Tone & Style Rules
 
