@@ -1,3 +1,10 @@
+# [1.18.0](https://github.com/danibsheehan/dani-foundations/compare/v1.17.0...v1.18.0) (2026-09-12)
+
+
+### Features
+
+* add docs/ subfolder convention and README scaffold template ([#27](https://github.com/danibsheehan/dani-foundations/issues/27)) ([4e0a3ff](https://github.com/danibsheehan/dani-foundations/commit/4e0a3ff6f12b3e56ceb914092fa8a02f4103c1d7))
+
 # [1.17.0](https://github.com/danibsheehan/dani-foundations/compare/v1.16.0...v1.17.0) (2026-09-10)
 
 
