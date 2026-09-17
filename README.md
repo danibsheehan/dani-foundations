@@ -37,7 +37,7 @@ how a project wires it in._
 
 ## What's here
 
-- **`foundations` plugin** (`plugins/foundations/`) — 24 shared skills, each a short
+- **`foundations` plugin** (`plugins/foundations/`) — 25 shared skills, each a short
   instruction file Claude Code reads automatically when it's relevant. Grouped into 5
   areas: PR/git workflow, testing, docs, quality & hardening, and deploy.
 
@@ -79,6 +79,8 @@ how a project wires it in._
   **Quality & hardening**
   - `definition-of-done` — post-edit format/lint/test/build verification
   - `accessibility-a11y` — framework-agnostic a11y checklist (keyboard, ARIA, motion, contrast)
+  - `responsive-design` — mobile-first layout, fluid sizing, and content-driven breakpoint
+    strategy, independent of stack
   - `bundle-performance` — bundle-size measurement discipline and runtime perf checks
   - `api-hardening` — backend/API hardening principles (validation, SSRF-safe upstream calls,
     generic client errors, CORS/rate-limit defaults), independent of backend stack

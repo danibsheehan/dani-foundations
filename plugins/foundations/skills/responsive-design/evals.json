@@ -1,0 +1,42 @@
+[
+  {
+    "id": "fixed-width-card-overflows-mobile",
+    "prompt": "This card component overflows and forces horizontal scroll on mobile:\n\n```css\n.card {\n  width: 800px;\n  padding: 24px;\n}\n```\n\n```html\n<div class=\"card\">...</div>\n```\n\nFix it so it works on narrow viewports.",
+    "assertions": [
+      "Output replaces the fixed 800px width with a fluid approach (percentage, max-width, or flex/grid sizing)",
+      "Output no longer forces horizontal overflow at narrow viewport widths",
+      "Output does not simply reduce the fixed width to a smaller fixed pixel value",
+      "Output preserves reasonable content padding/spacing at the new width"
+    ]
+  },
+  {
+    "id": "device-specific-breakpoint-list",
+    "prompt": "This stylesheet targets specific phone models by width:\n\n```css\n/* iPhone SE */\n@media (max-width: 375px) { .grid { grid-template-columns: 1fr; } }\n/* iPhone 12 */\n@media (max-width: 390px) { .grid { grid-template-columns: 1fr; } }\n/* iPad */\n@media (max-width: 768px) { .grid { grid-template-columns: repeat(2, 1fr); } }\n```\n\nClean this up.",
+    "assertions": [
+      "Output consolidates the redundant near-duplicate breakpoints (375px/390px) into a single content-driven breakpoint",
+      "Output removes or reframes the device-name comments in favor of a breakpoint chosen by where the layout actually breaks",
+      "Output does not introduce additional device-specific breakpoints",
+      "Output keeps the same visual intent (single column at narrow widths, two columns at medium)"
+    ]
+  },
+  {
+    "id": "non-fluid-typography-stepped-media-queries",
+    "prompt": "This heading's font-size is set via a long list of fixed breakpoint overrides:\n\n```css\nh1 { font-size: 20px; }\n@media (min-width: 400px) { h1 { font-size: 24px; } }\n@media (min-width: 600px) { h1 { font-size: 28px; } }\n@media (min-width: 900px) { h1 { font-size: 32px; } }\n@media (min-width: 1200px) { h1 { font-size: 40px; } }\n```\n\nSimplify this so it scales smoothly.",
+    "assertions": [
+      "Output replaces the stepped media-query overrides with a single clamp()-based (or min()/max()-based) fluid font-size declaration",
+      "Output's clamp() bounds are consistent with the original min (20px) and max (40px) sizes",
+      "Output removes the now-unnecessary media query overrides for this property",
+      "Output does not leave a mix of both approaches for the same property"
+    ]
+  },
+  {
+    "id": "fixed-pixel-image-no-scaling",
+    "prompt": "This image doesn't scale down inside its flex container on narrow screens:\n\n```html\n<div class=\"hero\">\n  <img src=\"banner.jpg\" width=\"1200\" height=\"400\">\n</div>\n```\n\n```css\n.hero { display: flex; }\n```\n\nFix the scaling.",
+    "assertions": [
+      "Output makes the image scale within its container (e.g. max-width: 100%; height: auto, or width: 100%)",
+      "Output preserves the image's aspect ratio rather than letting it distort",
+      "Output does not simply remove the width/height attributes without addressing scaling, which would reintroduce layout shift",
+      "Output does not hardcode a smaller fixed pixel size instead of a fluid one"
+    ]
+  }
+]
