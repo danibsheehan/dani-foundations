@@ -1,3 +1,10 @@
+# [1.19.0](https://github.com/danibsheehan/dani-foundations/compare/v1.18.0...v1.19.0) (2026-09-17)
+
+
+### Features
+
+* add responsive-design skill ([#28](https://github.com/danibsheehan/dani-foundations/issues/28)) ([c6c5fbb](https://github.com/danibsheehan/dani-foundations/commit/c6c5fbbdd1854d11af42e7ad7f4c383042e1248c))
+
 # [1.18.0](https://github.com/danibsheehan/dani-foundations/compare/v1.17.0...v1.18.0) (2026-09-12)
 
 
