@@ -1,0 +1,11 @@
+{
+  "extraKnownMarketplaces": {
+    "dani-foundations": {
+      "source": { "source": "github", "repo": "danibsheehan/dani-foundations" },
+      "autoUpdate": true
+    }
+  },
+  "enabledPlugins": {
+    "foundations@dani-foundations": true
+  }
+}

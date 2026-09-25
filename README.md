@@ -105,9 +105,11 @@ how a project wires it in._
   shape shared across these repos (Stack/Install/Configure/Run/Test-CI-parity/Conventions/
   Constraints/Definition-of-done headings), plus `dependabot.yml.template` capturing the
   already-standardized Dependabot grouping convention (npm minor/patch grouped for
-  auto-merge, every other ecosystem ungrouped for individual review). Copy these in when
-  bootstrapping a new repo and fill in the repo-specific prose; not auto-synced into
-  existing repos.
+  auto-merge, every other ecosystem ungrouped for individual review), plus
+  `claude-settings.json.template`, the `.claude/settings.json` entry that enables this
+  plugin with auto-update turned on (copy it in, or merge it into an existing settings
+  file). Copy these in when bootstrapping a new repo and fill in the repo-specific prose;
+  not auto-synced into existing repos.
 
 - **`plugins/foundations/hooks/`** — a `PreToolUse` hook that validates branch names against
   the `branch-naming` skill's `<type>/<slug>` convention before `git checkout -b` / `git
@@ -139,16 +141,32 @@ local `.claude/skills/*` — no naming conflicts.
 `plugins/foundations/.claude-plugin/plugin.json`'s `version` is bumped and tagged
 automatically by CI (`.github/workflows/release.yml`, via
 [semantic-release](https://semantic-release.gitbook.io/)) on every merge to `main` that
-contains a releasable change — don't hand-edit the `version` field. Claude Code's plugin
-install is a per-repo snapshot (pinned to the commit present at install time), not a live
-sync, so a version bump alone doesn't push anything; each consuming repo has to explicitly
-re-install/update via `/plugins` to pick up a new version. Because updates are opt-in per
-consumer, **always pin to a specific tag/version rather than tracking `main`.** Every version
-bump gets a matching git tag (`vX.Y.Z`, e.g. `v1.8.0`) at the commit that makes the bump, so
-tag history exactly mirrors `plugin.json` history — the easiest way to answer "what changed
-between the version I have and HEAD." Tags aren't consulted by the plugin install/update
-mechanism itself (unlike `dani-actions`, where a git tag ref is exactly what a consumer's
-`workflow_call` pins to); they're for human-readable release history only.
+contains a releasable change — don't hand-edit the `version` field.
+
+Claude Code decides whether an update exists by comparing the `version` in `plugin.json`, so
+consumers get a new version once per release, not once per commit to `main`. Auto-update is
+off by default for third-party marketplaces; turn it on by adding `"autoUpdate": true` to
+the marketplace entry in a repo's `.claude/settings.json` (see
+`templates/claude-settings.json.template`), or by toggling it in `/plugin` → Marketplaces.
+With it on, an interactive session checks for a newer version after the first message (after
+a random delay of up to ten minutes) and downloads it; run `/reload-plugins` to apply it to
+the running session.
+
+Caveats:
+
+- Auto-update only runs in interactive sessions. Non-interactive runs (`claude -p`, CI) never
+  auto-update and use whatever version is already installed.
+- Cloud sessions (claude.ai/code) don't install plugins declared in a repo's
+  `.claude/settings.json`, so this plugin isn't available there at all.
+- On a machine where the marketplace was already installed with auto-update off, the
+  committed setting may not take effect until someone toggles auto-update once in `/plugin`
+  (the docs don't say how the two interact).
+
+Every version bump gets a matching git tag (`vX.Y.Z`, e.g. `v1.8.0`) at the commit that makes
+the bump, so tag history exactly mirrors `plugin.json` history — the easiest way to answer
+"what changed between the version I have and HEAD." Tags aren't consulted by the plugin
+install/update mechanism itself (unlike `dani-actions`, where a git tag ref is exactly what a
+consumer's `workflow_call` pins to); they're for human-readable release history only.
 
 PR titles must follow [Conventional Commits](https://www.conventionalcommits.org/) (enforced
 by `.github/workflows/pr-title-lint.yml`), since PRs are squash-merged and the PR title is
