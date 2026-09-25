@@ -5,7 +5,12 @@
     {
       "name": "foundations",
       "source": "./plugins/foundations",
-      "description": "Shared process/docs Claude Code skills for personal project repos"
+      "description": "Shared process/docs Claude Code skills for personal project repos",
+      "author": { "name": "Danielle Sheehan" },
+      "license": "MIT",
+      "repository": "https://github.com/danibsheehan/dani-foundations",
+      "homepage": "https://github.com/danibsheehan/dani-foundations",
+      "keywords": ["skills", "workflow", "documentation", "testing", "accessibility", "security"]
     }
   ]
 }
