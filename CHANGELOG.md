@@ -1,3 +1,10 @@
+## [1.19.1](https://github.com/danibsheehan/dani-foundations/compare/v1.19.0...v1.19.1) (2026-09-28)
+
+
+### Bug Fixes
+
+* surface definition-of-done more prominently ([#31](https://github.com/danibsheehan/dani-foundations/issues/31)) ([886a7c7](https://github.com/danibsheehan/dani-foundations/commit/886a7c75188a9c20647088bc676f3024f396b714))
+
 # [1.19.0](https://github.com/danibsheehan/dani-foundations/compare/v1.18.0...v1.19.0) (2026-09-17)
 
 
