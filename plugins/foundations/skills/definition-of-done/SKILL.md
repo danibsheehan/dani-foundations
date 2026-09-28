@@ -3,7 +3,8 @@ name: definition-of-done
 description: >
   Verifies changes by running this repo's format check, lint, tests, and
   build. Use after substantive edits to application code, styles,
-  server/proxy, or config, or when the user asks to validate or finish a task.
+  server/proxy, or config; before committing or wrapping up a task; or
+  whenever the user asks to validate, finish, or confirm a task is done.
 ---
 
 # Definition of done
