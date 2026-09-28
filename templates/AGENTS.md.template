@@ -49,16 +49,19 @@ narrative tour.
 
 ## Definition of done
 
-- **Task done**: <!-- smallest relevant check for a typical edit -->.
+- **Task done**: <!-- smallest relevant check for a typical edit --> — see
+  `foundations:definition-of-done` for the check sequence and when to scale it up or down.
 - **PR done**: <!-- full CI-parity sequence + PR template; when to actually push/open a PR. -->
+  — see **pr-ready**.
 
 ---
 
 Skills: `.claude/skills` is this repo's canonical skills directory (`.cursor/skills` symlinks
 to it for legacy Cursor compatibility). This repo also installs the shared `foundations`
 plugin from the `dani-foundations` marketplace for skills common across personal projects —
-see `CLAUDE.md`. Two apply to how any task here gets branched and scoped:
+see `CLAUDE.md`. Three apply to how any task here gets branched, scoped, and verified:
 `foundations:branch-naming` (branch names follow `<type>/<slug>`; enforced automatically by
-a `PreToolUse` hook shipped with the plugin) and `foundations:pr-chunk-plan` (break a task
+a `PreToolUse` hook shipped with the plugin), `foundations:pr-chunk-plan` (break a task
 touching 3+ files or bundling multiple concerns into small reviewable chunks before
-implementation starts).
+implementation starts), and `foundations:definition-of-done` (run format/lint/test/build
+after substantive edits and before committing, scaled to the size of the change).
